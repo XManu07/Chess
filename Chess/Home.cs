@@ -10,16 +10,18 @@ using System.Windows.Forms;
 
 namespace Chess
 {
-    public partial class Form1 : Form
+    public partial class FHome : Form
     {
-        public Form1()
+        FChessGame chessGame;
+        public FHome()
         {
             InitializeComponent();
         }
 
         private void btnStartGame_Click(object sender, EventArgs e)
         {
-
+            chessGame=new FChessGame();
+            chessGame.ShowDialog();
         }
     }
 }

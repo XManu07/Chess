@@ -1,6 +1,6 @@
 ﻿namespace Chess
 {
-    partial class Form1
+    partial class FHome
     {
         /// <summary>
         /// Required designer variable.
@@ -33,22 +33,23 @@
             // 
             // btnStartGame
             // 
-            this.btnStartGame.Location = new System.Drawing.Point(316, 371);
+            this.btnStartGame.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.btnStartGame.Location = new System.Drawing.Point(205, 415);
             this.btnStartGame.Name = "btnStartGame";
-            this.btnStartGame.Size = new System.Drawing.Size(122, 43);
+            this.btnStartGame.Size = new System.Drawing.Size(130, 40);
             this.btnStartGame.TabIndex = 0;
             this.btnStartGame.Text = "Start";
-            this.btnStartGame.UseVisualStyleBackColor = true;
+            this.btnStartGame.UseVisualStyleBackColor = false;
             this.btnStartGame.Click += new System.EventHandler(this.btnStartGame_Click);
             // 
-            // Form1
+            // FHome
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(609, 494);
             this.Controls.Add(this.btnStartGame);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "FHome";
+            this.Text = "Home";
             this.ResumeLayout(false);
 
         }
