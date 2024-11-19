@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Chess
 {
-    internal class King
+    internal class King: Piece
     {
+        public King(PieceNames name, PieceColors color, Position pos) 
+            : base(name, color, pos)
+        {
+
+        }
     }
 }

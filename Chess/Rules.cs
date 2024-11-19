@@ -11,9 +11,9 @@ namespace Chess
 
     struct Position
     {
-        int x;
-        int y;
-    }
+        public int x,y;
+         
+    };
     internal interface Rules
     {
         bool AvailableMove();
