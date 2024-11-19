@@ -23,5 +23,7 @@ namespace Chess
             chessGame=new FChessGame();
             chessGame.ShowDialog();
         }
+
+ 
     }
 }

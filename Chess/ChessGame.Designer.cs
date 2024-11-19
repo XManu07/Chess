@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FChessGame));
             this.btnExitGame = new System.Windows.Forms.Button();
+            this.chessBoard = new System.Windows.Forms.TableLayoutPanel();
             this.SuspendLayout();
             // 
             // btnExitGame
@@ -39,13 +40,22 @@
             this.btnExitGame.UseVisualStyleBackColor = true;
             this.btnExitGame.Click += new System.EventHandler(this.btnExitGame_Click);
             // 
+            // chessBoard
+            // 
+            this.chessBoard.BackColor = System.Drawing.SystemColors.ScrollBar;
+            resources.ApplyResources(this.chessBoard, "chessBoard");
+            this.chessBoard.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.chessBoard.Name = "chessBoard";
+            // 
             // FChessGame
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.chessBoard);
             this.Controls.Add(this.btnExitGame);
             this.Name = "FChessGame";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.FChessGame_Load);
             this.ResumeLayout(false);
 
         }
@@ -53,5 +63,6 @@
         #endregion
 
         private System.Windows.Forms.Button btnExitGame;
+        private System.Windows.Forms.TableLayoutPanel chessBoard;
     }
 }
