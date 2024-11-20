@@ -19,8 +19,18 @@ namespace Chess
     {
         Player Manu = new Player("Manu", PieceColors.white);
         //Player Banu = new Player("Banu", PieceColors.black);
-        
-        public void InitBoardColors() { 
+        public void InitPieceImage(Panel square,String nameOfImage)
+        {
+            ResourceManager rm = new ResourceManager("Chess.Properties.Resources", Assembly.GetExecutingAssembly());
+            Image pieceImage = (Image)rm.GetObject(nameOfImage);
+            PictureBox piece =new PictureBox();
+            piece.Image = pieceImage;
+            piece.SizeMode = PictureBoxSizeMode.StretchImage;
+            piece.Dock = DockStyle.Fill;
+            piece.BackColor = Color.Transparent;
+            square.Controls.Add(piece);
+        }
+        public void InitBoardColors_Pieces() { 
             for (int row = 0; row < 8; row++)
             {
                 for (int column = 0; column < 8; column++)
@@ -29,140 +39,65 @@ namespace Chess
                     square.BackColor = (row + column) % 2 == 0 ? Color.SaddleBrown : Color.Peru;
 
                     //init pawns
-                    ResourceManager rm = new ResourceManager("Chess.Properties.Resources", Assembly.GetExecutingAssembly());
                     if (row == 1)
                     {
-                        Image pawnImage = (Image)rm.GetObject("pawn_brown");
-                        PictureBox pawn= new PictureBox();
-                        pawn.Image = pawnImage;
-                        pawn.SizeMode = PictureBoxSizeMode.StretchImage;
-                        pawn.Dock = DockStyle.Fill;
-                        pawn.BackColor = Color.Transparent;
-                        square.Controls.Add (pawn);
+                        InitPieceImage(square, "pawn_brown");
                     }
 
                     if (row == 6)
                     {
-                        Image pawnImage = (Image)rm.GetObject("pawn_black");
-                        PictureBox pawn = new PictureBox();
-                        pawn.Image = pawnImage;
-                        pawn.SizeMode = PictureBoxSizeMode.StretchImage;
-                        pawn.Dock = DockStyle.Fill;
-                        pawn.BackColor = Color.Transparent;
-                        square.Controls.Add(pawn);
+                        InitPieceImage(square, "pawn_black");
                     }
 
                     //init rooks
                     if(row==0 && (column==0 || column == 7))
                     {
-                        Image rookImage = (Image)rm.GetObject("rook_brown");
-                        PictureBox rook = new PictureBox();
-                        rook.Image = rookImage;
-                        rook.SizeMode = PictureBoxSizeMode.StretchImage;
-                        rook.Dock = DockStyle.Fill;
-                        rook.BackColor = Color.Transparent;
-                        square.Controls.Add(rook);
+                        InitPieceImage(square, "rook_brown");
                     }
                     if (row == 7 && (column == 0 || column == 7))
                     {
-                        Image rookImage = (Image)rm.GetObject("rook_black");
-                        PictureBox rook = new PictureBox();
-                        rook.Image = rookImage;
-                        rook.SizeMode = PictureBoxSizeMode.StretchImage;
-                        rook.Dock = DockStyle.Fill;
-                        rook.BackColor = Color.Transparent;
-                        square.Controls.Add(rook);
+                        InitPieceImage(square, "rook_black");
                     }
 
                     //init knights
                     if (row == 0 && (column == 1 || column == 6))
                     {
-                        Image KnightImage = (Image)rm.GetObject("knight_brown");
-                        PictureBox Knight = new PictureBox();
-                        Knight.Image = KnightImage;
-                        Knight.SizeMode = PictureBoxSizeMode.StretchImage;
-                        Knight.Dock = DockStyle.Fill;
-                        Knight.BackColor = Color.Transparent;
-                        square.Controls.Add(Knight);
+                        InitPieceImage(square, "knight_brown");
                     }
                     if (row == 7 && (column == 1 || column == 6))
                     {
-                        Image KnightImage = (Image)rm.GetObject("knight_black");
-                        PictureBox Knight = new PictureBox();
-                        Knight.Image = KnightImage;
-                        Knight.SizeMode = PictureBoxSizeMode.StretchImage;
-                        Knight.Dock = DockStyle.Fill;
-                        Knight.BackColor = Color.Transparent;
-                        square.Controls.Add(Knight);
+                        InitPieceImage(square, "knight_black");
                     }
 
                     //init bishops
                     if (row == 0 && (column == 2 || column == 5))
                     {
-                        Image bishopImage = (Image)rm.GetObject("bishop_brown");
-                        PictureBox bishop = new PictureBox();
-                        bishop.Image = bishopImage;
-                        bishop.SizeMode = PictureBoxSizeMode.StretchImage;
-                        bishop.Dock = DockStyle.Fill;
-                        bishop.BackColor = Color.Transparent;
-                        square.Controls.Add(bishop);
+                        InitPieceImage(square, "bishop_brown");
                     }
                     if (row == 7 && (column == 2 || column == 5))
                     {
-                        Image bishopImage = (Image)rm.GetObject("bishop_black");
-                        PictureBox bishop = new PictureBox();
-                        bishop.Image = bishopImage;
-                        bishop.SizeMode = PictureBoxSizeMode.StretchImage;
-                        bishop.Dock = DockStyle.Fill;
-                        bishop.BackColor = Color.Transparent;
-                        square.Controls.Add(bishop);
+                        InitPieceImage(square, "bishop_black");
                     }
 
-                    //init knights
+                    //init king
                     if (row == 0 && column == 4)
                     {
-                        Image kingImage = (Image)rm.GetObject("king_brown");
-                        PictureBox king = new PictureBox();
-                        king.Image = kingImage;
-                        king.SizeMode = PictureBoxSizeMode.StretchImage;
-                        king.Dock = DockStyle.Fill;
-                        king.BackColor = Color.Transparent;
-                        square.Controls.Add(king);
+                        InitPieceImage(square, "king_brown");
                     }
                     if (row == 7 && column == 4)
                     {
-                        Image kingImage = (Image)rm.GetObject("king_black");
-                        PictureBox king = new PictureBox();
-                        king.Image = kingImage;
-                        king.SizeMode = PictureBoxSizeMode.StretchImage;
-                        king.Dock = DockStyle.Fill;
-                        king.BackColor = Color.Transparent;
-                        square.Controls.Add(king);
+                        InitPieceImage(square, "king_black");
                     }
 
                     //init queens
                     if (row == 0 && column == 3)
                     {
-                        Image queenImage = (Image)rm.GetObject("queen_brown");
-                        PictureBox queen = new PictureBox();
-                        queen.Image = queenImage;
-                        queen.SizeMode = PictureBoxSizeMode.StretchImage;
-                        queen.Dock = DockStyle.Fill;
-                        queen.BackColor = Color.Transparent;
-                        square.Controls.Add(queen);
+                        InitPieceImage(square, "queen_brown");
                     }
                     if (row == 7 && column == 3)
                     {
-                        Image queenImage = (Image)rm.GetObject("queen_black");
-                        PictureBox queen = new PictureBox();
-                        queen.Image = queenImage;
-                        queen.SizeMode = PictureBoxSizeMode.StretchImage;
-                        queen.Dock = DockStyle.Fill;
-                        queen.BackColor = Color.Transparent;
-                        square.Controls.Add(queen);
+                        InitPieceImage(square, "queen_black");
                     }
-
-
 
                     chessBoard.Controls.Add(square, column, row);
                 }
@@ -173,8 +108,10 @@ namespace Chess
         public FChessGame()
         {
             InitializeComponent();
-            InitBoardColors();
- 
+            InitBoardColors_Pieces();
+
+            Resize += FChessGame_Resize; 
+            AdjustChessBoardSize();
         }
 
         private void btnExitGame_Click(object sender, EventArgs e)
@@ -186,7 +123,14 @@ namespace Chess
         {
 
         }
-
-
+        private void FChessGame_Resize(object sender, EventArgs e) {
+            AdjustChessBoardSize();
+        } 
+        private void AdjustChessBoardSize() 
+        { 
+            int size = Math.Min(this.ClientSize.Width, this.ClientSize.Height); 
+            chessBoard.Size = new Size(size, size);
+            chessBoard.Location = new Point( (this.ClientSize.Width - size) / 2, (this.ClientSize.Height - size) / 2 ); 
+        }
     }
 }
