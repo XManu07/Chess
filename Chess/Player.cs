@@ -12,20 +12,20 @@ namespace Chess
         PieceColors piece_colors;
         public List<Piece> pieces;
 
+        public Player(string name,PieceColors color)
+        {
+            this.name = name;
+            this.piece_colors = color;
+            InitPieces();
+        }
+
         void InitPieces()
         {
+            pieces = new List<Piece>();
             Position pos = new Position();
             if (piece_colors == PieceColors.white)
             {
-                //init white 
-                //pawns
-                pos.x = 1;
-                for (int i = 0; i < 8; i++)
-                {
-                    pos.y = i;
-                    pieces.Add(new Pawn(PieceNames.pawn, PieceColors.white, pos));
-                }
-
+                //init white pieces 
                 pos.x = 0;
 
                 pos.y = 0;
@@ -47,20 +47,21 @@ namespace Chess
                 pieces.Add(new Queen(PieceNames.queen, PieceColors.white, pos));
                 pos.y = 4;
                 pieces.Add(new King(PieceNames.king, PieceColors.white, pos));
-            }
-
-            if (piece_colors == PieceColors.black)
-            {
+            
                 
-                //init black 
                 //pawns
-                pos.x = 6;
+                pos.x = 1;
                 for (int i = 0; i < 8; i++)
                 {
                     pos.y = i;
-                    pieces.Add(new Pawn(PieceNames.pawn, PieceColors.black, pos));
+                    pieces.Add(new Pawn(PieceNames.pawn, PieceColors.white, pos));
                 }
 
+            }
+            
+            if (piece_colors == PieceColors.black)
+            {
+                //init black pieces
                 pos.x = 7;
 
                 pos.y = 0;
@@ -83,7 +84,16 @@ namespace Chess
                 pos.y = 4;
                 pieces.Add(new King(PieceNames.king, PieceColors.black, pos));
 
+                
+                //pawns
+                pos.x = 6;
+                for (int i = 0; i < 8; i++)
+                {
+                    pos.y = i;
+                    pieces.Add(new Pawn(PieceNames.pawn, PieceColors.black, pos));
+                }
             }
         }
+      
     }
 }

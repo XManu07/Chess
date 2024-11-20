@@ -99,7 +99,52 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <None Include="Resources\pawnicon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pawnic.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Icon1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\bishop_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\king_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\knight_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\queen_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\rook_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\pawn_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\pawn_brown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\bishop_brown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\king_brown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\knight_brown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\queen_brown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\rook_brown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\004-rook.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
