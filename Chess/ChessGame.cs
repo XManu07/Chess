@@ -18,12 +18,13 @@ namespace Chess
 
     {
         Player Manu = new Player("Manu", PieceColors.white);
-        //Player Banu = new Player("Banu", PieceColors.black);
+
         public void InitPieceImage(Panel square,String nameOfImage)
         {
             ResourceManager rm = new ResourceManager("Chess.Properties.Resources", Assembly.GetExecutingAssembly());
             Image pieceImage = (Image)rm.GetObject(nameOfImage);
             PictureBox piece =new PictureBox();
+            piece.Click += PictureBox_Click;
             piece.Image = pieceImage;
             piece.SizeMode = PictureBoxSizeMode.StretchImage;
             piece.Dock = DockStyle.Fill;
@@ -36,7 +37,8 @@ namespace Chess
                 for (int column = 0; column < 8; column++)
                 {
                     Panel square = new Panel();
-                    square.BackColor = (row + column) % 2 == 0 ? Color.SaddleBrown : Color.Peru;
+                    square.BackColor = (row + column) % 2 == 0 ? Color.SaddleBrown : Color.Beige;
+                    square.Click += Panel_Click;
 
                     //init pawns
                     if (row == 1)
@@ -110,8 +112,6 @@ namespace Chess
             InitializeComponent();
             InitBoardColors_Pieces();
 
-            Resize += FChessGame_Resize; 
-            AdjustChessBoardSize();
         }
 
         private void btnExitGame_Click(object sender, EventArgs e)
@@ -131,6 +131,27 @@ namespace Chess
             int size = Math.Min(this.ClientSize.Width, this.ClientSize.Height); 
             chessBoard.Size = new Size(size, size);
             chessBoard.Location = new Point( (this.ClientSize.Width - size) / 2, (this.ClientSize.Height - size) / 2 ); 
+        }
+
+        private void Panel_Click(object sender, EventArgs e)
+        {
+            Panel clickedSquare = sender as Panel;
+            if (clickedSquare != null)
+            {
+                Console.WriteLine("You clicked on a square at position: ");
+                Console.WriteLine(chessBoard.GetPositionFromControl(clickedSquare));
+            } 
+        }
+
+        private void PictureBox_Click(object sender, EventArgs e)
+        {
+            PictureBox clickedPicture= sender as PictureBox;
+            Panel parent = clickedPicture.Parent as Panel;
+            if(clickedPicture != null)
+            {
+                Console.WriteLine("You clicked on an image at position: ");
+                Console.WriteLine(chessBoard.GetCellPosition(parent));
+            }
         }
     }
 }
