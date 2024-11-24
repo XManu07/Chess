@@ -12,9 +12,12 @@ namespace Chess
 {
     internal class Queen:Piece
     {
-        public Queen(PieceNames name, PieceColors color, Position pos) 
-            : base(name, color, pos)
+        public Queen(Colors color, Point position) :
+              base()
         {
+            SetPieceName(PieceNames.queen);
+            SetPieceColor(color);
+            SetPosition(position);
             SetPieceImage();
         }
     }

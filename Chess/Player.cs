@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,91 +10,45 @@ namespace Chess
 {
     internal class Player
     {
-        public String name;
-        PieceColors piece_color;
-        public List<Piece> pieces;
+        private Colors playerColorOfPieces;
+        private List<Piece> pieces;
 
-        public Player(string name,PieceColors color)
+        public Player(Colors color)
         {
-            this.name = name;
-            this.piece_color = color;
+            this.playerColorOfPieces = color;
             InitPieces();
+        }
+        public int GetLine()
+        {
+            return playerColorOfPieces == Colors.black ? 7 : 0;
+        }
+        public int GetPawnLine()
+        {
+            int fline=GetLine();
+            return fline== 0 ? fline + 1 : fline - 1;
+        }
+        public List<Piece> GetPieces()
+        {
+            return pieces;
         }
 
         void InitPieces()
-        {
-            pieces = new List<Piece>();
-            Position pos = new Position();
-            if (piece_color == PieceColors.white)
+        { 
+            pieces = new List<Piece>
             {
-                //init white pieces 
-                pos.x = 0;
+                new Rook(playerColorOfPieces, new Point(GetLine(), 0)),
+                new Knight(playerColorOfPieces, new Point(GetLine(), 1)),
+                new Bishop(playerColorOfPieces, new Point(GetLine(), 2)),
+                new Queen(playerColorOfPieces, new Point(GetLine(), 3)),
+                new King(playerColorOfPieces, new Point(GetLine(), 4)),
+                new Bishop(playerColorOfPieces, new Point(GetLine(), 5)),
+                new Knight(playerColorOfPieces, new Point(GetLine(), 6)),
+                new Rook(playerColorOfPieces, new Point(GetLine(), 7)),
 
-                pos.y = 0;
-                pieces.Add(new Rook(PieceNames.rook, PieceColors.white, pos));
-                pos.y = 7;
-                pieces.Add(new Rook(PieceNames.rook, PieceColors.white, pos));
-                
-
-                pos.y = 1;
-                pieces.Add(new Knight(PieceNames.knight, PieceColors.white, pos));
-                pos.y = 6;
-                pieces.Add(new Knight(PieceNames.knight, PieceColors.white, pos));
-
-                pos.y = 2;
-                pieces.Add(new Bishop(PieceNames.bishop, PieceColors.white, pos));
-                pos.y = 5;
-                pieces.Add(new Bishop(PieceNames.bishop, PieceColors.white, pos));
-
-                pos.y = 3;
-                pieces.Add(new Queen(PieceNames.queen, PieceColors.white, pos));
-                pos.y = 4;
-                pieces.Add(new King(PieceNames.king, PieceColors.white, pos));
-            
-                
-                //pawns
-                pos.x = 1;
-                for (int i = 0; i < 8; i++)
-                {
-                    pos.y = i;
-                    pieces.Add(new Pawn(PieceNames.pawn, PieceColors.white, pos));
-                }
-
-            }
-            
-            if (piece_color == PieceColors.black)
+            };
+            for (int i = 0; i < 8; i++)
             {
-                //init black pieces
-                pos.x = 7;
-
-                pos.y = 0;
-                pieces.Add(new Rook(PieceNames.rook, PieceColors.black, pos));
-                pos.y = 7;
-                pieces.Add(new Rook(PieceNames.rook, PieceColors.black, pos));
-
-                pos.y = 1;
-                pieces.Add(new Knight(PieceNames.knight, PieceColors.black, pos));
-                pos.y = 6;
-                pieces.Add(new Knight(PieceNames.knight, PieceColors.black, pos));
-
-                pos.y = 2;
-                pieces.Add(new Bishop(PieceNames.bishop, PieceColors.black, pos));
-                pos.y = 5;
-                pieces.Add(new Bishop(PieceNames.bishop, PieceColors.black, pos));
-
-                pos.y = 3;
-                pieces.Add(new Queen(PieceNames.queen, PieceColors.black, pos));
-                pos.y = 4;
-                pieces.Add(new King(PieceNames.king, PieceColors.black, pos));
-
-                
-                //pawns
-                pos.x = 6;
-                for (int i = 0; i < 8; i++)
-                {
-                    pos.y = i;
-                    pieces.Add(new Pawn(PieceNames.pawn, PieceColors.black, pos));
-                }
+                pieces.Add(new Pawn(playerColorOfPieces,new Point(GetPawnLine(),i)));
             }
         }
 
@@ -101,6 +56,10 @@ namespace Chess
         {
             pieces.ForEach(p => { Console.WriteLine(p.ToString()); });
         }
-      
+
+        public void Move()
+        {
+            
+        }
     }
 }

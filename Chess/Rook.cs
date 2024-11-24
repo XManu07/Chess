@@ -12,9 +12,12 @@ namespace Chess
 {
     internal class Rook: Piece
     {
-        public Rook(PieceNames name, PieceColors color, Position pos)
-            : base(name, color, pos)
+        public Rook(Colors color, Point position) :
+           base()
         {
+            SetPieceName(PieceNames.rook);
+            SetPieceColor(color);
+            SetPosition(position);
             SetPieceImage();
         }
     }

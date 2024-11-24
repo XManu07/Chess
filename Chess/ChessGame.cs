@@ -18,38 +18,13 @@ namespace Chess
 
     {
         PictureBox pictureToBeMoved=null;
-        Player Manu = new Player("Manu", PieceColors.black);
-        
-        public void InitPieces()
-        {
-            foreach (var item in Manu.pieces)
-            {
-                item.pieceImage.Click += PictureBox_Click;
-                chessBoard.GetControlFromPosition(item.position.y, item.position.x).Controls.Add(item.pieceImage);
-                
-            }
-        }
-        public void InitBoardColors_Pieces()
-        {
-            for (int row = 0; row < 8; row++)
-            {
-                for (int column = 0; column < 8; column++)
-                {
-                    Panel square = new Panel();
-                    square.BackColor = (row + column) % 2 == 0 ? Color.SaddleBrown : Color.Beige;
-                    square.Click += Panel_Click;
-                    chessBoard.Controls.Add(square, column, row);
-                }
-            }
-
-        }
+        GameLogic game;
 
         public FChessGame()
         {
             InitializeComponent();
-            InitBoardColors_Pieces();
-            InitPieces();
-
+            game = new GameLogic(this.chessBoard);
+            
         }
 
         private void btnExitGame_Click(object sender, EventArgs e)

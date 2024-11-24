@@ -12,10 +12,13 @@ namespace Chess
 {
     internal class Knight:Piece
     {
-        public Knight(PieceNames name, PieceColors color, Position pos) 
-            : base(name, color, pos)
+        public Knight(Colors color, Point position) :
+           base()
         {
-            SetPieceImage();    
+            SetPieceName(PieceNames.knight);
+            SetPieceColor(color);
+            SetPosition(position);
+            SetPieceImage();
         }
     }
 }

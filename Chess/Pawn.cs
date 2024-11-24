@@ -12,10 +12,12 @@ namespace Chess
 {
     internal class Pawn: Piece 
     {
-      
-        public Pawn(PieceNames name,PieceColors color,Position pos)
-            :base(name,color,pos) 
+        public Pawn(Colors color,Point position):
+            base()
         {
+            SetPieceName(PieceNames.pawn);
+            SetPieceColor(color);
+            SetPosition(position);
             SetPieceImage();
         }
     }

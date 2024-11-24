@@ -12,9 +12,12 @@ namespace Chess
 {
     internal class Bishop:Piece
     {
-        public Bishop(PieceNames name, PieceColors color, Position pos) 
-            : base(name, color, pos)
+        public Bishop(Colors color, Point position) :
+            base()
         {
+            SetPieceName(PieceNames.bishop);
+            SetPieceColor(color);
+            SetPosition(position);
             SetPieceImage();
         }
     }

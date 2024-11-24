@@ -73,7 +73,7 @@
     </Compile>
     <Compile Include="Queen.cs" />
     <Compile Include="Rook.cs" />
-    <Compile Include="Rules.cs" />
+    <Compile Include="GameLogic.cs" />
     <EmbeddedResource Include="ChessGame.resx">
       <DependentUpon>ChessGame.cs</DependentUpon>
     </EmbeddedResource>

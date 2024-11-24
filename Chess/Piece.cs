@@ -8,15 +8,40 @@ namespace Chess
 {
     internal abstract class Piece
     {
-        PieceNames piece_name;
-        public PieceColors piece_color;
-        public Position position;
-        public PictureBox pieceImage;
+        private PieceNames pieceName;
+        private Colors pieceColor;
+        private Point piecePosition;
+        private PictureBox pieceImage;
+        public enum PieceNames { pawn, rook, knight, bishop, king, queen };
 
-        
+        public void SetPieceName(PieceNames name)
+        {
+            pieceName = name;
+        }
+        public PieceNames GetPieceName()
+        {
+            return pieceName;
+        }
+        public void SetPieceColor(Colors color)
+        {
+            pieceColor = color;
+        }
+        public Colors GetPieceColor()
+        {
+            return pieceColor;
+        }
+        public void SetPosition(Point pos)
+        {
+            piecePosition.X = pos.X;
+            piecePosition.Y = pos.Y;
+        }
+        public Point GetPiecePosition()
+        {
+            return piecePosition;
+        }
         public void SetPieceImage()
         {
-            string nameOfImage = piece_name.ToString()+"_"+piece_color.ToString();
+            string nameOfImage = pieceName.ToString()+"_"+pieceColor.ToString();
 
             ResourceManager rm = new ResourceManager("Chess.Properties.Resources", Assembly.GetExecutingAssembly());
             Image PieceImage = (Image)rm.GetObject(nameOfImage);
@@ -25,24 +50,18 @@ namespace Chess
             pieceImage.SizeMode = PictureBoxSizeMode.StretchImage;
             pieceImage.Dock = DockStyle.Fill;
             pieceImage.BackColor = Color.Transparent;
+        }
+        public PictureBox GetPieceImage()
+        {
+            return pieceImage;
+        }
 
-        }
-        public Piece(PieceNames name, PieceColors color, Position pos)
-        {
-            piece_name = name;
-            piece_color = color;
-            position = pos;
-        }
-        public Piece()
-        {
-            
-        }
 
         public override string ToString()
-        { 
-            return "[Piece="+piece_name+",color="+piece_color+",position="
-                +position.x+","+position.y+"]";
-                
+        {
+            return "[Piece=" + pieceName + ",color=" + pieceColor + ",position="
+                + piecePosition.X + "," + piecePosition.Y + "]";
         }
     }
 }
+ 
