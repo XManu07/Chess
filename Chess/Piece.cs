@@ -1,18 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
+using System.Resources;
+using System.Windows.Forms;
 
 namespace Chess
 {
-    internal class Piece
+    internal abstract class Piece
     {
         PieceNames piece_name;
-        PieceColors piece_color;
-        Position position;
+        public PieceColors piece_color;
+        public Position position;
+        public PictureBox pieceImage;
 
+        
+        public void SetPieceImage()
+        {
+            string nameOfImage = piece_name.ToString()+"_"+piece_color.ToString();
+
+            ResourceManager rm = new ResourceManager("Chess.Properties.Resources", Assembly.GetExecutingAssembly());
+            Image PieceImage = (Image)rm.GetObject(nameOfImage);
+            pieceImage = new PictureBox();
+            pieceImage.Image = PieceImage;
+            pieceImage.SizeMode = PictureBoxSizeMode.StretchImage;
+            pieceImage.Dock = DockStyle.Fill;
+            pieceImage.BackColor = Color.Transparent;
+
+        }
         public Piece(PieceNames name, PieceColors color, Position pos)
         {
             piece_name = name;
@@ -25,10 +39,10 @@ namespace Chess
         }
 
         public override string ToString()
-        {
+        { 
             return "[Piece="+piece_name+",color="+piece_color+",position="
                 +position.x+","+position.y+"]";
-                ;
+                
         }
     }
 }

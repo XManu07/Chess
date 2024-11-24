@@ -73,9 +73,9 @@ namespace Chess.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap bishop_brown {
+        internal static System.Drawing.Bitmap bishop_white {
             get {
-                object obj = ResourceManager.GetObject("bishop_brown", resourceCulture);
+                object obj = ResourceManager.GetObject("bishop_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +93,9 @@ namespace Chess.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap king_brown {
+        internal static System.Drawing.Bitmap king_white {
             get {
-                object obj = ResourceManager.GetObject("king_brown", resourceCulture);
+                object obj = ResourceManager.GetObject("king_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,9 +113,9 @@ namespace Chess.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap knight_brown {
+        internal static System.Drawing.Bitmap knight_white {
             get {
-                object obj = ResourceManager.GetObject("knight_brown", resourceCulture);
+                object obj = ResourceManager.GetObject("knight_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,9 +133,9 @@ namespace Chess.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap pawn_brown {
+        internal static System.Drawing.Bitmap pawn_white {
             get {
-                object obj = ResourceManager.GetObject("pawn_brown", resourceCulture);
+                object obj = ResourceManager.GetObject("pawn_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,9 +153,9 @@ namespace Chess.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap queen_brown {
+        internal static System.Drawing.Bitmap queen_white {
             get {
-                object obj = ResourceManager.GetObject("queen_brown", resourceCulture);
+                object obj = ResourceManager.GetObject("queen_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -173,19 +173,9 @@ namespace Chess.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap rook_brown {
+        internal static System.Drawing.Bitmap rook_white {
             get {
-                object obj = ResourceManager.GetObject("rook_brown", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap rookw {
-            get {
-                object obj = ResourceManager.GetObject("rookw", resourceCulture);
+                object obj = ResourceManager.GetObject("rook_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

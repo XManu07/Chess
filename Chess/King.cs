@@ -11,7 +11,7 @@ namespace Chess
         public King(PieceNames name, PieceColors color, Position pos) 
             : base(name, color, pos)
         {
-
+            SetPieceImage();
         }
     }
 }

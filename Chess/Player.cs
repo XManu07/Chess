@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Chess
 {
     internal class Player
     {
         public String name;
-        PieceColors piece_colors;
+        PieceColors piece_color;
         public List<Piece> pieces;
 
         public Player(string name,PieceColors color)
         {
             this.name = name;
-            this.piece_colors = color;
+            this.piece_color = color;
             InitPieces();
         }
 
@@ -23,7 +24,7 @@ namespace Chess
         {
             pieces = new List<Piece>();
             Position pos = new Position();
-            if (piece_colors == PieceColors.white)
+            if (piece_color == PieceColors.white)
             {
                 //init white pieces 
                 pos.x = 0;
@@ -32,6 +33,7 @@ namespace Chess
                 pieces.Add(new Rook(PieceNames.rook, PieceColors.white, pos));
                 pos.y = 7;
                 pieces.Add(new Rook(PieceNames.rook, PieceColors.white, pos));
+                
 
                 pos.y = 1;
                 pieces.Add(new Knight(PieceNames.knight, PieceColors.white, pos));
@@ -59,7 +61,7 @@ namespace Chess
 
             }
             
-            if (piece_colors == PieceColors.black)
+            if (piece_color == PieceColors.black)
             {
                 //init black pieces
                 pos.x = 7;
@@ -93,6 +95,11 @@ namespace Chess
                     pieces.Add(new Pawn(PieceNames.pawn, PieceColors.black, pos));
                 }
             }
+        }
+
+        public void ShowPieces()
+        {
+            pieces.ForEach(p => { Console.WriteLine(p.ToString()); });
         }
       
     }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Chess
 {
     public enum PieceColors { white, black };
-    public enum PieceNames { pawn, rook, knight, bishop, king, queen };
+    public enum PieceNames {pawn,rook,knight,bishop,king,queen};
 
     struct Position
     {
