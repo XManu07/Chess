@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Chess
 {
-    internal class Rook: Piece
+    internal class Rook : Piece
     {
         public Rook(Colors color, Point position) :
            base()
@@ -19,6 +19,17 @@ namespace Chess
             SetPieceColor(color);
             SetPosition(position);
             SetPieceImage();
+        }
+
+        public override void Move()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override bool ValidMove(Point destination)
+        {
+            Console.WriteLine("mutare valida " + GetPieceName());
+            return true;
         }
     }
 }

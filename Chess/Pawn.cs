@@ -12,6 +12,7 @@ namespace Chess
 {
     internal class Pawn: Piece 
     {
+
         public Pawn(Colors color,Point position):
             base()
         {
@@ -19,6 +20,18 @@ namespace Chess
             SetPieceColor(color);
             SetPosition(position);
             SetPieceImage();
+        }
+        public override void Move()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override bool ValidMove(Point destination)
+        {
+            //TODO logic for valid move
+            Console.WriteLine("mutare valida " + GetPieceName());
+            SetPosition(destination);
+            return true;
         }
     }
 }

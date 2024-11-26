@@ -46,33 +46,5 @@ namespace Chess
             chessBoard.Location = new Point( (this.ClientSize.Width - size) / 2, (this.ClientSize.Height - size) / 2 ); 
         }
 
-        private void Panel_Click(object sender, EventArgs e)
-        {
-            Panel clickedSquare = sender as Panel;
-            if (clickedSquare != null)
-            {
-                Console.WriteLine("You clicked on a square at position: ");
-                Console.WriteLine(chessBoard.GetPositionFromControl(clickedSquare));
-                if (pictureToBeMoved != null)
-                {
-                    Controls.Remove(pictureToBeMoved);
-                    pictureToBeMoved.Location = new Point(clickedSquare.Location.X, clickedSquare.Location.Y);
-                    clickedSquare.Controls.Add(pictureToBeMoved);
-                }
-            }
-        }
-        public void PictureBox_Click(object sender, EventArgs e)
-        {
-            PictureBox clickedPicture = sender as PictureBox;
-            Panel parent = clickedPicture.Parent as Panel;
-            if (clickedPicture != null)
-            {
-                Console.WriteLine("You clicked on an image at position: ");
-                Console.WriteLine(chessBoard.GetCellPosition(parent));
-                pictureToBeMoved = clickedPicture;
-
-            }
-        }
-
     }
 }

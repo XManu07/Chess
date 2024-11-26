@@ -62,6 +62,9 @@ namespace Chess
             return "[Piece=" + pieceName + ",color=" + pieceColor + ",position="
                 + piecePosition.X + "," + piecePosition.Y + "]";
         }
+
+        public abstract void Move();
+        internal abstract bool ValidMove(Point destination);
     }
 }
  

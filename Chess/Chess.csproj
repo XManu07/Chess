@@ -47,17 +47,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bishop.cs" />
-    <Compile Include="ChessGame.cs">
+    <Compile Include="Board.cs" />
+    <Compile Include="FChessGame.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ChessGame.Designer.cs">
-      <DependentUpon>ChessGame.cs</DependentUpon>
+    <Compile Include="FChessGame.Designer.cs">
+      <DependentUpon>FChessGame.cs</DependentUpon>
     </Compile>
-    <Compile Include="Home.cs">
+    <Compile Include="FHome.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Home.Designer.cs">
-      <DependentUpon>Home.cs</DependentUpon>
+    <Compile Include="FHome.Designer.cs">
+      <DependentUpon>FHome.cs</DependentUpon>
     </Compile>
     <Compile Include="King.cs" />
     <Compile Include="Knight.cs" />
@@ -74,11 +75,11 @@
     <Compile Include="Queen.cs" />
     <Compile Include="Rook.cs" />
     <Compile Include="GameLogic.cs" />
-    <EmbeddedResource Include="ChessGame.resx">
-      <DependentUpon>ChessGame.cs</DependentUpon>
+    <EmbeddedResource Include="FChessGame.resx">
+      <DependentUpon>FChessGame.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Home.resx">
-      <DependentUpon>Home.cs</DependentUpon>
+    <EmbeddedResource Include="FHome.resx">
+      <DependentUpon>FHome.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
