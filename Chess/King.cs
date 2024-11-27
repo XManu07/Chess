@@ -18,16 +18,18 @@ namespace Chess
             SetPosition(position);
             SetPieceImage();
         }
-
-        public override void Move()
-        {
-            throw new NotImplementedException();
-        }
-
         internal override bool ValidMove(Point destination)
         {
-            Console.WriteLine("mutare valida " + GetPieceName());
-            return true;
+            if (Math.Abs(GetPiecePosition().X-destination.X)<=1 && Math.Abs(GetPiecePosition().Y - destination.Y) <= 1)
+            {
+                Console.WriteLine("mutare valid");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("mutare invalida");
+                return false;
+            }
         }
     }
 }

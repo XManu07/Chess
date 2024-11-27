@@ -17,8 +17,10 @@ namespace Chess
         Player player1 = new Player(Colors.black);
         Player player2 = new Player(Colors.white);
 
+
         PictureBox selectedPieceImage;
         Piece pieceFromImage;
+        Panel panelOfPieceImage;
         Control destinationSquare;
         public GameLogic(TableLayoutPanel game)
         {
@@ -27,6 +29,7 @@ namespace Chess
             InitPieces();
             StartGame();
         }
+        #region InitBoard
         public void InitBoardBackground()
         {
             for (int row = 0; row < 8; row++)
@@ -40,21 +43,6 @@ namespace Chess
                 }
             }
         }
-
-        //public void Panel_Click(object sender, EventArgs e)
-        //{
-        //    clickedSquare = sender as Control;
-        //    if (clickedSquare != null)
-        //    {
-        //        Console.WriteLine("You clicked on a square at position: "+ 
-        //            chessBoard.GetPositionFromControl(clickedSquare));
-        //        if (selectedPieceImage != null  )
-        //        {
-        //            selectedPieceImage.Location = new Point(clickedSquare.Location.X, clickedSquare.Location.Y);
-        //            clickedSquare.Controls.Add(selectedPieceImage);
-        //        }
-        //    }
-        //}
 
         public void InitPieces()
         {
@@ -71,7 +59,22 @@ namespace Chess
                     .Controls.Add(item.GetPieceImage());
             }
         }
-
+        #endregion
+        /*
+  //public void Panel_Click(object sender, EventArgs e)
+        //{
+        //    clickedSquare = sender as Control;
+        //    if (clickedSquare != null)
+        //    {
+        //        Console.WriteLine("You clicked on a square at position: "+ 
+        //            chessBoard.GetPositionFromControl(clickedSquare));
+        //        if (selectedPieceImage != null  )
+        //        {
+        //            selectedPieceImage.Location = new Point(clickedSquare.Location.X, clickedSquare.Location.Y);
+        //            clickedSquare.Controls.Add(selectedPieceImage);
+        //        }
+        //    }
+        //}
         //public void PictureBox_Click(object sender, EventArgs e)
         //{
         //    PictureBox clickedPicture = sender as PictureBox;
@@ -83,30 +86,37 @@ namespace Chess
         //        selectedPieceImage = clickedPicture;
         //    }
         //}
-
+ */
         public void Control_Click(object sender, EventArgs e)
         {
             if (sender.GetType() == typeof(PictureBox))
             {
                 selectedPieceImage = sender as PictureBox;
-                pieceFromImage = player1.GetPieceFromImage(selectedPieceImage,chessBoard);
-                Console.WriteLine("picture box");
-                Console.WriteLine(pieceFromImage.ToString());
+                panelOfPieceImage=selectedPieceImage.Parent as Panel;
+                pieceFromImage = player1.GetPieceFromImage(selectedPieceImage, chessBoard);
+                Console.WriteLine("clicked on picture box " + pieceFromImage.ToString());
             }
             else
             {
                 destinationSquare = sender as Panel;
-                if(pieceFromImage!=null)
+                Console.WriteLine("click on panel"+chessBoard.GetCellPosition(destinationSquare));
+                
+                if (pieceFromImage != null)
                 {
                     if (selectedPieceImage != null &&
                         pieceFromImage.ValidMove(player1.getPointFromDestination(destinationSquare, chessBoard)))
-                        {
-                            destinationSquare.Controls.Add(selectedPieceImage);
-                        }
+                    {
+                        panelOfPieceImage.Controls.Remove(selectedPieceImage);
+                        destinationSquare.Controls.Add(selectedPieceImage);
+                        Point destinationSquarePos = new Point();
+                        destinationSquarePos.X = chessBoard.GetCellPosition(destinationSquare).Row;
+                        destinationSquarePos.Y = chessBoard.GetCellPosition(destinationSquare).Column;
+                        pieceFromImage.SetPosition(destinationSquarePos);
+                    }
                 }
-                Console.WriteLine("panel");
             }
         }
+
         public bool Mate()
         {
             return true;
@@ -115,8 +125,7 @@ namespace Chess
         {
             while (!Mate())
             {
-                player1.Move(selectedPieceImage,destinationSquare,chessBoard);
-                player2.Move(selectedPieceImage, destinationSquare, chessBoard);
+
             }
         }
     }

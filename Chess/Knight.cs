@@ -20,16 +20,34 @@ namespace Chess
             SetPosition(position);
             SetPieceImage();
         }
-
-        public override void Move()
-        {
-            throw new NotImplementedException();
-        }
-
         internal override bool ValidMove(Point destination)
         {
-            Console.WriteLine("mutare valida " + GetPieceName());
-            return true;
+            if ((GetPiecePosition().X==destination.X+2 && GetPiecePosition().Y==destination.Y+1)||
+                (GetPiecePosition().X==destination.X+2 && GetPiecePosition().Y==destination.Y-1)||
+                (GetPiecePosition().X == destination.X + 1 && GetPiecePosition().Y == destination.Y - 2)||
+                (GetPiecePosition().X == destination.X -1 && GetPiecePosition().Y == destination.Y - 2) ||
+                (GetPiecePosition().X == destination.X -2 && GetPiecePosition().Y == destination.Y - 1) ||
+                (GetPiecePosition().X == destination.X -2 && GetPiecePosition().Y == destination.Y +1) ||
+                (GetPiecePosition().X == destination.X -1 && GetPiecePosition().Y == destination.Y +2) ||
+                (GetPiecePosition().X == destination.X + 1 && GetPiecePosition().Y == destination.Y + 2))
+            {
+                /*
+                 * if destination =empty 
+                 *      return true
+                 *  else return false
+                 *  if piece from destination color != piece color
+                 *      return true
+                    else return false
+                 */ 
+
+                Console.WriteLine("mutare valida");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("mutare invalida");
+                return false;             
+            }
         }
     }
 }

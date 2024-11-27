@@ -36,6 +36,8 @@ namespace Chess
         {
 
         }
+
+        #region resize
         private void FChessGame_Resize(object sender, EventArgs e) {
             AdjustChessBoardSize();
         } 
@@ -45,6 +47,6 @@ namespace Chess
             chessBoard.Size = new Size(size, size);
             chessBoard.Location = new Point( (this.ClientSize.Width - size) / 2, (this.ClientSize.Height - size) / 2 ); 
         }
-
+        #endregion
     }
 }

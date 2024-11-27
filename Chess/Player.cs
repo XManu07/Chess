@@ -21,32 +21,38 @@ namespace Chess
             this.playerColorOfPieces = color;
             InitPieces();
         }
-        public int GetLine()
+
+        #region Get Line from color
+        public int GetPiecesLine()
         {
             return playerColorOfPieces == Colors.black ? 7 : 0;
         }
         public int GetPawnLine()
         {
-            int fline=GetLine();
+            int fline=GetPiecesLine();
             return fline== 0 ? fline + 1 : fline - 1;
         }
+        #endregion
         public List<Piece> GetPieces()
         {
             return pieces;
         }
-
+        public void ShowPieces()
+        {
+            pieces.ForEach(p => { Console.WriteLine(p.ToString()); });
+        }
         void InitPieces()
         { 
             pieces = new List<Piece>
             {
-                new Rook(playerColorOfPieces, new Point(GetLine(), 0)),
-                new Knight(playerColorOfPieces, new Point(GetLine(), 1)),
-                new Bishop(playerColorOfPieces, new Point(GetLine(), 2)),
-                new Queen(playerColorOfPieces, new Point(GetLine(), 3)),
-                new King(playerColorOfPieces, new Point(GetLine(), 4)),
-                new Bishop(playerColorOfPieces, new Point(GetLine(), 5)),
-                new Knight(playerColorOfPieces, new Point(GetLine(), 6)),
-                new Rook(playerColorOfPieces, new Point(GetLine(), 7)),
+                new Rook(playerColorOfPieces, new Point(GetPiecesLine(), 0)),
+                new Knight(playerColorOfPieces, new Point(GetPiecesLine(), 1)),
+                new Bishop(playerColorOfPieces, new Point(GetPiecesLine(), 2)),
+                new Queen(playerColorOfPieces, new Point(GetPiecesLine(), 3)),
+                new King(playerColorOfPieces, new Point(GetPiecesLine(), 4)),
+                new Bishop(playerColorOfPieces, new Point(GetPiecesLine(), 5)),
+                new Knight(playerColorOfPieces, new Point(GetPiecesLine(), 6)),
+                new Rook(playerColorOfPieces, new Point(GetPiecesLine(), 7)),
 
             };
             for (int i = 0; i < 8; i++)
@@ -55,11 +61,7 @@ namespace Chess
             }
         }
 
-        public void ShowPieces()
-        {
-            pieces.ForEach(p => { Console.WriteLine(p.ToString()); });
-        }
-
+        #region Move function
         public void Move(PictureBox image,Control destination,TableLayoutPanel chessBoard)
         {
             Piece pieceFromImage=GetPieceFromImage(image,chessBoard);
@@ -72,8 +74,8 @@ namespace Chess
         public Point getPointFromDestination(Control destination, TableLayoutPanel chessBoard)
         {
             Point destinationPosition = new Point();
-            destinationPosition.X = chessBoard.GetPositionFromControl(destination).Column;
-            destinationPosition.Y = chessBoard.GetPositionFromControl(destination).Row;
+            destinationPosition.X = chessBoard.GetPositionFromControl(destination).Row;
+            destinationPosition.Y = chessBoard.GetPositionFromControl(destination).Column;
             return destinationPosition;
         }
         public Piece GetPieceFromImage(PictureBox image, TableLayoutPanel chessBoard)
@@ -89,5 +91,8 @@ namespace Chess
             }
             return null;
         }
+        #endregion
+
+        
     }
 }

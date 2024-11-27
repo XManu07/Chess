@@ -14,6 +14,7 @@ namespace Chess
         private PictureBox pieceImage;
         public enum PieceNames { pawn, rook, knight, bishop, king, queen };
 
+        #region Set,Get
         public void SetPieceName(PieceNames name)
         {
             pieceName = name;
@@ -39,6 +40,9 @@ namespace Chess
         {
             return piecePosition;
         }
+        #endregion
+
+        #region Set,Get PieceImage
         public void SetPieceImage()
         {
             string nameOfImage = pieceName.ToString()+"_"+pieceColor.ToString();
@@ -55,15 +59,13 @@ namespace Chess
         {
             return pieceImage;
         }
-
+        #endregion
 
         public override string ToString()
         {
             return "[Piece=" + pieceName + ",color=" + pieceColor + ",position="
                 + piecePosition.X + "," + piecePosition.Y + "]";
         }
-
-        public abstract void Move();
         internal abstract bool ValidMove(Point destination);
     }
 }
