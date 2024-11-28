@@ -18,7 +18,7 @@ namespace Chess
             SetPosition(position);
             SetPieceImage();
         }
-        internal override bool ValidMove(Point destination)
+        internal override bool ValidMove(Point destination, int[,] allPieces)
         {
             if (Math.Abs(GetPiecePosition().X-destination.X)<=1 && Math.Abs(GetPiecePosition().Y - destination.Y) <= 1)
             {

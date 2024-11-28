@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -10,13 +11,14 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Chess
 {
-    public enum Colors { white, black };
+    public enum Colors { white=1, black=2 };
     internal class GameLogic
     {
         private TableLayoutPanel chessBoard;
         Player player1 = new Player(Colors.black);
         Player player2 = new Player(Colors.white);
 
+        int[,] allPieces=new int[8,8];
 
         PictureBox selectedPieceImage;
         Piece pieceFromImage;
@@ -27,6 +29,8 @@ namespace Chess
             this.chessBoard = game;
             InitBoardBackground();
             InitPieces();
+            InitPieceMatrix(player1,player2);
+            ShowMatrix(allPieces);
             StartGame();
         }
         #region InitBoard
@@ -104,29 +108,52 @@ namespace Chess
                 if (pieceFromImage != null)
                 {
                     if (selectedPieceImage != null &&
-                        pieceFromImage.ValidMove(player1.getPointFromDestination(destinationSquare, chessBoard)))
+                        pieceFromImage.ValidMove(player1.getPointFromDestination(destinationSquare, chessBoard),allPieces))
                     {
                         panelOfPieceImage.Controls.Remove(selectedPieceImage);
                         destinationSquare.Controls.Add(selectedPieceImage);
                         Point destinationSquarePos = new Point();
                         destinationSquarePos.X = chessBoard.GetCellPosition(destinationSquare).Row;
                         destinationSquarePos.Y = chessBoard.GetCellPosition(destinationSquare).Column;
+                        UpdateMatrix(pieceFromImage.GetPiecePosition());
                         pieceFromImage.SetPosition(destinationSquarePos);
+                        InitPieceMatrix(player1, player2);
+                        ShowMatrix(allPieces);
                     }
                 }
             }
         }
-
-        public bool Mate()
-        {
-            return true;
-        }
         public void StartGame()
         {
-            while (!Mate())
+        }
+        public void UpdateMatrix(Point pos)
+        {
+            allPieces[pos.X, pos.Y] = 0;
+        }
+        public void InitPieceMatrix(Player p1, Player p2)
+        {
+            foreach(var piece in p1.GetPieces())
             {
+                allPieces[piece.GetPiecePosition().X,piece.GetPiecePosition().Y] = (int)p1.GetPlayerColor();
+                
+            }
 
+            foreach (var piece in p2.GetPieces())
+            {
+                allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)p2.GetPlayerColor();
             }
         }
+        public void ShowMatrix(int[,] pieces)
+        {
+            for (int line=0;line<8;line++)
+            {
+                for(int column = 0; column < 8; column++)
+                {
+                    Console.Write(allPieces[line, column] + " ");
+                }
+                Console.WriteLine();
+            }
+        }
+        
     }
 }

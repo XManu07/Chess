@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -21,73 +23,81 @@ namespace Chess
             SetPosition(position);
             SetPieceImage();
         }
-
-        internal override bool ValidMove(Point destination)
+        public bool OnePositionIsValid(Point destination,int[,] allPieces)
         {
-            /*
-            -destination = next square
-            if is black
-                if piece line=destination line+1 and destination column = piece column
-                    if destination == empty (doesn t have white or black piece)
-                        return true
-                    else return false
-            
-            -in case in destination is a picturebox
-            if piece line = destination line+1 and destination column is piece column +/- 1
-                if piece color from destination = white 
-                    return true
-                if piece color from destination =black
-                    return false
-            return false
-            */
+            if(this.GetPieceColor() == Colors.black)
+            {
+                if (this.GetPiecePosition().X == destination.X + 1 && this.GetPiecePosition().Y == destination.Y)
+                    return true;
+            }
             if (this.GetPieceColor() == Colors.black)
             {
-                if (this.GetPiecePosition().X==destination.X+1 && this.GetPiecePosition().Y == destination.Y)
-                {
-                    //if destination is empty
-                    //return true;
-                    //else return false
-                    Console.WriteLine("mutare valida ");
-                    return true;
-                }
-                if(this.GetPiecePosition().X==destination.X+1 && (
-                    this.GetPiecePosition().Y == destination.Y+1 || this.GetPiecePosition().Y == destination.Y - 1))
-                {
-                    //if destination.color==white
-                    //return true
-                    //else return false
-                    Console.WriteLine("mutare valida ");
-                    return true;
-                }
-                Console.WriteLine("mutare invalida ");
-                return false;
-            }
-            
-            if (this.GetPieceColor() == Colors.white)
-            {
                 if (this.GetPiecePosition().X == destination.X - 1 && this.GetPiecePosition().Y == destination.Y)
-                {
-                    //if destination is empty
-                    //return true;
-                    //else return false
-                    Console.WriteLine("mutare valida ");
                     return true;
-                }
-                if (this.GetPiecePosition().X == destination.X + 1 && (
-                    this.GetPiecePosition().Y == destination.Y + 1 || this.GetPiecePosition().Y == destination.Y - 1))
-                {
-                    //if destination.color==white
-                    //return true
-                    //else return false
-                    Console.WriteLine("mutare valida ");
-                    return true;
-                }
-                Console.WriteLine("mutare invalida ");
-                return false;
-
             }
-            Console.WriteLine("mutare invalida ");
-            return false; 
+            return false;
+        }
+        public bool CanTakeFrontPiece(Point destination, int[,] allPieces)
+        {
+            if(GetPieceColor() == Colors.black)
+            {
+                if (GetPiecePosition().X == 6 &&
+                    destination.X + 2 == GetPiecePosition().X &&
+                    GetPiecePosition().Y == destination.Y &&
+                    allPieces[destination.X - 1, destination.Y] == 0)
+                    return true;
+                else return false;
+            }
+            if (GetPieceColor() == Colors.white)
+            {
+                if (this.GetPiecePosition().X == 1 &&
+                    destination.X - 2 == GetPiecePosition().X &&
+                    GetPiecePosition().Y == destination.Y &&
+                    allPieces[destination.X + 1, destination.Y] == 0)
+                    return true;
+                else return false;
+            }
+            return false;
+        }
+        public bool TwoPositionIsValid(Point destination, int[,] allPieces)
+        {   
+            if(GetPieceColor()==Colors.black)
+            {
+                if (GetPiecePosition().X == 6 &&
+                    destination.X + 2 == GetPiecePosition().X &&
+                    GetPiecePosition().Y == destination.Y &&
+                    SquareIsEmpty(destination.X+1, destination.Y, allPieces))
+                    return true;
+                else return false;
+            }
+            if (GetPieceColor() == Colors.black)
+            {
+                if (GetPiecePosition().X == 1 &&
+                    destination.X - 2 == GetPiecePosition().X &&
+                    GetPiecePosition().Y == destination.Y &&
+                    SquareIsEmpty(destination.X - 1, destination.Y, allPieces))
+                    return true;
+                else return false;
+            }
+            return false;
+        }
+        internal override bool ValidMove(Point destination, int[,] allPieces)
+        {
+            
+            if (OnePositionIsValid(destination,allPieces))
+            {
+                if( SquareIsEmpty(destination, allPieces) )
+                    return true;
+            }
+            if (CanTakeFrontPiece(destination, allPieces))
+            {
+                if (SquareIsOpositePiece(destination, allPieces))
+                    return true;           
+            }
+            if (TwoPositionIsValid(destination, allPieces))
+                return true;
+            else return false;
+
         }
     }
 }

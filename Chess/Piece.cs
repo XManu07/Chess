@@ -66,7 +66,24 @@ namespace Chess
             return "[Piece=" + pieceName + ",color=" + pieceColor + ",position="
                 + piecePosition.X + "," + piecePosition.Y + "]";
         }
-        internal abstract bool ValidMove(Point destination);
+        internal abstract bool ValidMove(Point destination,int[,] allPieces);
+        public bool SquareIsEmpty(Point destination, int[,] allPieces)
+        {
+            return (allPieces[destination.X, destination.Y] == 0) ? true : false;
+        }
+        public bool SquareIsEmpty(int x,int y, int[,] allPieces)
+        {
+            return allPieces[x, y] == 0?true: false;
+        }
+        public bool SquareIsOpositePiece(Point destination, int[,] allPieces)
+        {
+            if(pieceColor==Colors.black)
+                return (allPieces[destination.X,destination.Y]==2) ? true : false;
+            if(pieceColor==Colors.white)
+                return (allPieces[destination.X,destination.Y] == 1) ? true : false;
+            return false;
+        }
+
     }
 }
  

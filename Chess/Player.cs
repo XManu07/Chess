@@ -16,6 +16,10 @@ namespace Chess
         private Colors playerColorOfPieces;
         private List<Piece> pieces;
 
+        public Colors GetPlayerColor()
+        {
+            return playerColorOfPieces;
+        }
         public Player(Colors color)
         {
             this.playerColorOfPieces = color;
@@ -62,15 +66,15 @@ namespace Chess
         }
 
         #region Move function
-        public void Move(PictureBox image,Control destination,TableLayoutPanel chessBoard)
-        {
-            Piece pieceFromImage=GetPieceFromImage(image,chessBoard);
-            Point destinationPosition = getPointFromDestination(destination, chessBoard);
-            if (pieceFromImage.ValidMove(destinationPosition))
-            {
-                destination = image;
-            }
-        }   
+        //public void Move(PictureBox image,Control destination,TableLayoutPanel chessBoard)
+        //{
+        //    Piece pieceFromImage=GetPieceFromImage(image,chessBoard);
+        //    Point destinationPosition = getPointFromDestination(destination, chessBoard);
+        //    if (pieceFromImage.ValidMove(destinationPosition))
+        //    {
+        //        destination = image;
+        //    }
+        //}   
         public Point getPointFromDestination(Control destination, TableLayoutPanel chessBoard)
         {
             Point destinationPosition = new Point();
