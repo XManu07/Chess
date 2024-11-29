@@ -46,41 +46,46 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChessGame.cs">
+    <Compile Include="Bishop.cs" />
+    <Compile Include="Board.cs" />
+    <Compile Include="FChessGame.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ChessGame.Designer.cs">
-      <DependentUpon>ChessGame.cs</DependentUpon>
+    <Compile Include="FChessGame.Designer.cs">
+      <DependentUpon>FChessGame.cs</DependentUpon>
     </Compile>
-    <Compile Include="Home.cs">
+    <Compile Include="FHome.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Home.Designer.cs">
-      <DependentUpon>Home.cs</DependentUpon>
+    <Compile Include="FHome.Designer.cs">
+      <DependentUpon>FHome.cs</DependentUpon>
     </Compile>
+    <Compile Include="King.cs" />
+    <Compile Include="Knight.cs" />
+    <Compile Include="Pawn.cs" />
     <Compile Include="Piece.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Rules.cs" />
-    <EmbeddedResource Include="ChessGame.dje.resx">
-      <DependentUpon>ChessGame.cs</DependentUpon>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Queen.cs" />
+    <Compile Include="Rook.cs" />
+    <Compile Include="GameLogic.cs" />
+    <EmbeddedResource Include="FChessGame.resx">
+      <DependentUpon>FChessGame.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChessGame.resx">
-      <DependentUpon>ChessGame.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Home.resx">
-      <DependentUpon>Home.cs</DependentUpon>
+    <EmbeddedResource Include="FHome.resx">
+      <DependentUpon>FHome.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -93,6 +98,54 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pawnicon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pawnic.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Icon1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\bishop_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\king_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\knight_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\queen_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\rook_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\pawn_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\pawn_brown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\bishop_brown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\king_brown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\knight_brown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\queen_brown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\rook_brown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\004-rook.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -16,12 +16,16 @@ namespace Chess
         public FHome()
         {
             InitializeComponent();
+            //this code is from start button
+            chessGame=new FChessGame();
+            chessGame.ShowDialog();
         }
 
         private void btnStartGame_Click(object sender, EventArgs e)
         {
-            chessGame=new FChessGame();
-            chessGame.ShowDialog();
+            
         }
+
+ 
     }
 }
