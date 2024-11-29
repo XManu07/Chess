@@ -11,7 +11,8 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Chess
 {
-    public enum Colors { white=1, black=2 };
+    public enum Colors { white=1, black=9 };
+    public enum Pieces { blackKing=8,whiteKing=2}
     internal class GameLogic
     {
         private TableLayoutPanel chessBoard;
@@ -129,18 +130,34 @@ namespace Chess
         public void UpdateMatrix(Point pos)
         {
             allPieces[pos.X, pos.Y] = 0;
+            allPieces[5, 5] = 2;
         }
         public void InitPieceMatrix(Player p1, Player p2)
         {
             foreach(var piece in p1.GetPieces())
             {
                 allPieces[piece.GetPiecePosition().X,piece.GetPiecePosition().Y] = (int)p1.GetPlayerColor();
-                
+                //init king
+                if (piece.GetPieceName() == PieceNames.king)
+                { 
+                    if (p1.GetPlayerColor() == Colors.black)
+                        allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)Pieces.blackKing;
+                    if (p1.GetPlayerColor() == Colors.white)
+                        allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)Pieces.whiteKing;
+                }
             }
 
             foreach (var piece in p2.GetPieces())
             {
                 allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)p2.GetPlayerColor();
+                //init king 
+                if (piece.GetPieceName() == PieceNames.king)
+                   {
+                    if (p2.GetPlayerColor() == Colors.black)
+                        allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)Pieces.blackKing;
+                    if (p2.GetPlayerColor() == Colors.white)
+                        allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)Pieces.whiteKing;
+                }
             }
         }
         public void ShowMatrix(int[,] pieces)

@@ -21,29 +21,55 @@ namespace Chess
             SetPosition(position);
             SetPieceImage();
         }
+        public bool ValidSquare (Point destination)
+        {
+            if (Math.Abs(destination.X - this.GetPiecePosition().X) == Math.Abs(this.GetPiecePosition().Y - destination.Y))
+                return true;
+            return false;
+        }
+        private bool BishopToDestinationIsEmpty(Point destination, int[,] allPieces)
+        {
+            if(GetPiecePosition().X-destination.X< 0)
+            {
+                int j = destination.Y;
+                for (int i = destination.X - 1; i > GetPiecePosition().X; i--)
+                {   
+                    if (GetPiecePosition().Y - destination.Y > 0)
+                        j++;
+                    else j--;
+                    if (!SquareIsEmpty(i, j, allPieces))
+                        return false;      
+                }
+            }
+            if (GetPiecePosition().X - destination.X > 0)
+            {
+                int j = destination.Y;
+                for (int i = destination.X + 1; i < GetPiecePosition().X; i++)
+                {
+                    if (GetPiecePosition().Y - destination.Y > 0)
+                        j++;
+                    else j--;
+                    if (!SquareIsEmpty(i, j, allPieces))
+                        return false;
+                }
+            }
+            return true;
+        }
 
         internal override bool ValidMove(Point destination, int[,] allPieces)
         {
             
-            if(Math.Abs(destination.X-this.GetPiecePosition().X)== Math.Abs(this.GetPiecePosition().Y-destination.Y))
+            if(ValidSquare(destination))
             {
-                //if all pieces from bishop to destination = empty(destination included)
-                //    return true
-                //else return false
-                //if all pieces from bishop to destination - 1 = empty
-                //    if color of piece from dest != piece color
-                //        return true
-                //    else return false
-                //else return false
-                Console.WriteLine("mutare valida");
-                return true;
+                if (BishopToDestinationIsEmpty(destination, allPieces)&&SquareIsEmpty(destination,allPieces))
+                    return true;
+                if(BishopToDestinationIsEmpty(destination, allPieces))
+                {
+                    if(SquareIsOpositePiece(destination, allPieces)&&!SquareIsOpositeKing(destination,allPieces)) 
+                        return true;
+                }
             }
-            else
-            {
-                Console.WriteLine("mutare invalida");
-                return false;
-            }
-
+            return false;
         }
     }
 }

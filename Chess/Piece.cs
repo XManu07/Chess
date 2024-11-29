@@ -6,13 +6,14 @@ using System.Windows.Forms;
 
 namespace Chess
 {
+    public enum PieceNames { pawn, rook, knight, bishop, king, queen };
     internal abstract class Piece
     {
         private PieceNames pieceName;
         private Colors pieceColor;
         private Point piecePosition;
         private PictureBox pieceImage;
-        public enum PieceNames { pawn, rook, knight, bishop, king, queen };
+        
 
         #region Set,Get
         public void SetPieceName(PieceNames name)
@@ -81,6 +82,19 @@ namespace Chess
                 return (allPieces[destination.X,destination.Y]==2) ? true : false;
             if(pieceColor==Colors.white)
                 return (allPieces[destination.X,destination.Y] == 1) ? true : false;
+            return false;
+        }
+        public bool SquareIsOpositeKing(Point destination, int[,] allPieces)
+        {
+            if (SquareIsOpositePiece(destination, allPieces))
+                if (SquareIsKing(destination, allPieces))
+                    return true;
+            return false;
+        }
+        public bool SquareIsKing(Point destination, int[,] allPieces)
+        {
+            if (allPieces[destination.X, destination.Y] == 2 || allPieces[destination.X, destination.Y] == 8)
+                return true; 
             return false;
         }
 

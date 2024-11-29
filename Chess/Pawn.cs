@@ -30,7 +30,7 @@ namespace Chess
                 if (this.GetPiecePosition().X == destination.X + 1 && this.GetPiecePosition().Y == destination.Y)
                     return true;
             }
-            if (this.GetPieceColor() == Colors.black)
+            if (this.GetPieceColor() == Colors.white)
             {
                 if (this.GetPiecePosition().X == destination.X - 1 && this.GetPiecePosition().Y == destination.Y)
                     return true;
@@ -70,7 +70,7 @@ namespace Chess
                     return true;
                 else return false;
             }
-            if (GetPieceColor() == Colors.black)
+            if (GetPieceColor() == Colors.white)
             {
                 if (GetPiecePosition().X == 1 &&
                     destination.X - 2 == GetPiecePosition().X &&
@@ -83,7 +83,6 @@ namespace Chess
         }
         internal override bool ValidMove(Point destination, int[,] allPieces)
         {
-            
             if (OnePositionIsValid(destination,allPieces))
             {
                 if( SquareIsEmpty(destination, allPieces) )
@@ -91,13 +90,12 @@ namespace Chess
             }
             if (CanTakeFrontPiece(destination, allPieces))
             {
-                if (SquareIsOpositePiece(destination, allPieces))
+                if (SquareIsOpositePiece(destination, allPieces)&& !SquareIsOpositeKing(destination,allPieces))
                     return true;           
             }
             if (TwoPositionIsValid(destination, allPieces))
                 return true;
             else return false;
-
         }
     }
 }

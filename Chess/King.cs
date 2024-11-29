@@ -18,18 +18,19 @@ namespace Chess
             SetPosition(position);
             SetPieceImage();
         }
+        public bool SquareValid(Point destination)
+        {
+            if (Math.Abs(GetPiecePosition().X - destination.X) <= 1 && Math.Abs(GetPiecePosition().Y - destination.Y) <= 1)
+                return true;
+            return false;
+        }
         internal override bool ValidMove(Point destination, int[,] allPieces)
         {
-            if (Math.Abs(GetPiecePosition().X-destination.X)<=1 && Math.Abs(GetPiecePosition().Y - destination.Y) <= 1)
-            {
-                Console.WriteLine("mutare valid");
+            if (SquareValid(destination) && SquareIsEmpty(destination, allPieces))
                 return true;
-            }
-            else
-            {
-                Console.WriteLine("mutare invalida");
-                return false;
-            }
+            if(SquareValid(destination)&& SquareIsOpositePiece(destination,allPieces))
+                return true;
+            return false;
         }
     }
 }

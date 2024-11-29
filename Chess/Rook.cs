@@ -20,26 +20,54 @@ namespace Chess
             SetPosition(position);
             SetPieceImage();
         }
+        public bool EmptyRookToDestination(Point destination,int[,] allPieces)
+        {
+            if (GetPiecePosition().X == destination.X)
+            {
+                for (int i = GetPiecePosition().Y+1; i < destination.Y; i++)
+                {
+                    if (SquareIsEmpty(destination.X, i, allPieces) == false)
+                        return false;
+                }
+                for (int i = GetPiecePosition().Y-1; i > destination.Y; i--)
+                {
+                    if (SquareIsEmpty(destination.X, i, allPieces)==false)
+                        return false;
+                }
+
+            }
+            if(GetPiecePosition().Y == destination.Y)
+            {
+                for (int i = GetPiecePosition().X+1; i < destination.X; i++)
+                {
+                    if (SquareIsEmpty(i, destination.Y, allPieces)==false)
+                        return false;
+                }
+                for (int i = GetPiecePosition().X-1; i >destination.X; i--)
+                {
+                    if (SquareIsEmpty(i, destination.Y, allPieces)==false)
+                        return false;
+                }
+            }
+            return true;
+        }
+        public bool ValidSquare(Point destination)
+        {
+            if (this.GetPiecePosition().X == destination.X || this.GetPiecePosition().Y == destination.Y)
+                return true;
+            return false;
+        }
         internal override bool ValidMove(Point destination, int[,] allPieces)
         {
-            if (this.GetPiecePosition().X==destination.X || this.GetPiecePosition().Y==destination.Y)
+            if (ValidSquare(destination))
             {
-                //if all position from rook to destination = empty(destination included)
-                //    return true
-                //else return false
-                //if all position from rook to destination - 1 = empty
-                //    if piece color from destination != piece color
-                //        return true
-                //    else return false
-                //else return false
-                Console.WriteLine("mutare valida ");
-                return true;
+                if (EmptyRookToDestination(destination, allPieces)&&SquareIsEmpty(destination,allPieces))
+                    return true;
+                if (EmptyRookToDestination(destination, allPieces))
+                    if (SquareIsOpositePiece(destination, allPieces)&&!SquareIsOpositeKing(destination,allPieces))
+                        return true;
             }
-            else
-            {
-                Console.WriteLine("mutare invalida");
-                return false;
-            }
+            return false;
         }
     }
 }

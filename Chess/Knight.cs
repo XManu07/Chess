@@ -20,34 +20,29 @@ namespace Chess
             SetPosition(position);
             SetPieceImage();
         }
+        public bool ValidSquare(Point destination)
+        {
+            if ((GetPiecePosition().X == destination.X + 2 && GetPiecePosition().Y == destination.Y + 1) ||
+                (GetPiecePosition().X == destination.X + 2 && GetPiecePosition().Y == destination.Y - 1) ||
+                (GetPiecePosition().X == destination.X + 1 && GetPiecePosition().Y == destination.Y - 2) ||
+                (GetPiecePosition().X == destination.X - 1 && GetPiecePosition().Y == destination.Y - 2) ||
+                (GetPiecePosition().X == destination.X - 2 && GetPiecePosition().Y == destination.Y - 1) ||
+                (GetPiecePosition().X == destination.X - 2 && GetPiecePosition().Y == destination.Y + 1) ||
+                (GetPiecePosition().X == destination.X - 1 && GetPiecePosition().Y == destination.Y + 2) ||
+                (GetPiecePosition().X == destination.X + 1 && GetPiecePosition().Y == destination.Y + 2))
+                return true;
+            return false;
+        }
         internal override bool ValidMove(Point destination, int[,] allPieces)
         {
-            if ((GetPiecePosition().X==destination.X+2 && GetPiecePosition().Y==destination.Y+1)||
-                (GetPiecePosition().X==destination.X+2 && GetPiecePosition().Y==destination.Y-1)||
-                (GetPiecePosition().X == destination.X + 1 && GetPiecePosition().Y == destination.Y - 2)||
-                (GetPiecePosition().X == destination.X -1 && GetPiecePosition().Y == destination.Y - 2) ||
-                (GetPiecePosition().X == destination.X -2 && GetPiecePosition().Y == destination.Y - 1) ||
-                (GetPiecePosition().X == destination.X -2 && GetPiecePosition().Y == destination.Y +1) ||
-                (GetPiecePosition().X == destination.X -1 && GetPiecePosition().Y == destination.Y +2) ||
-                (GetPiecePosition().X == destination.X + 1 && GetPiecePosition().Y == destination.Y + 2))
+            if (ValidSquare(destination))
             {
-                /*
-                 * if destination =empty 
-                 *      return true
-                 *  else return false
-                 *  if piece from destination color != piece color
-                 *      return true
-                    else return false
-                 */ 
-
-                Console.WriteLine("mutare valida");
-                return true;
+                if (SquareIsEmpty(destination, allPieces))
+                    return true;
+                if (SquareIsOpositePiece(destination, allPieces) && !SquareIsOpositeKing(destination, allPieces))
+                    return true;
             }
-            else
-            {
-                Console.WriteLine("mutare invalida");
-                return false;             
-            }
+           return false;
         }
     }
 }
