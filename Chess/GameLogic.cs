@@ -18,6 +18,7 @@ namespace Chess
         private TableLayoutPanel chessBoard;
         Player player1 = new Player(Colors.black);
         Player player2 = new Player(Colors.white);
+        Player currentPlayer;
 
         int[,] allPieces=new int[8,8];
 
@@ -30,6 +31,7 @@ namespace Chess
             this.chessBoard = game;
             InitBoardBackground();
             InitPieces();
+            currentPlayer = player1;
             InitPieceMatrix(player1,player2);
             ShowMatrix(allPieces);
             StartGame();
@@ -98,31 +100,119 @@ namespace Chess
             {
                 selectedPieceImage = sender as PictureBox;
                 panelOfPieceImage=selectedPieceImage.Parent as Panel;
-                pieceFromImage = player1.GetPieceFromImage(selectedPieceImage, chessBoard);
+                pieceFromImage = currentPlayer.GetPieceFromImage(selectedPieceImage, chessBoard);
                 Console.WriteLine("clicked on picture box " + pieceFromImage.ToString());
             }
             else
             {
                 destinationSquare = sender as Panel;
                 Console.WriteLine("click on panel"+chessBoard.GetCellPosition(destinationSquare));
-                
-                if (pieceFromImage != null)
+
+
+                if (selectedPieceImage != null &&
+                    pieceFromImage.ValidMove(currentPlayer.getPointFromDestination(destinationSquare, chessBoard),allPieces))
+                {    
+                if (PanelHasImage(destinationSquare))
+                { 
+                    Piece pieceToRemove=RemovePieceFromPlayerList(destinationSquare, currentPlayer);
+                        if(currentPlayer==player1)
+                            player2.RemovePiece(pieceToRemove);
+                        if(currentPlayer==player2)
+                            player1.RemovePiece(pieceToRemove);
+                    RemovePictureBox(destinationSquare);
+                }
+                    panelOfPieceImage.Controls.Remove(selectedPieceImage);
+                    destinationSquare.Controls.Add(selectedPieceImage);
+                    Point destinationSquarePos = new Point();
+                    destinationSquarePos.X = chessBoard.GetCellPosition(destinationSquare).Row;
+                    destinationSquarePos.Y = chessBoard.GetCellPosition(destinationSquare).Column;
+                    UpdateMatrix(pieceFromImage.GetPiecePosition());
+                    pieceFromImage.SetPosition(destinationSquarePos);
+                    InitPieceMatrix(player1, player2);
+                    ShowMatrix(allPieces);
+                    SwitchPlayer();
+                    selectedPieceImage = null;
+                    pieceFromImage = null;
+                }
+            }
+            /*
+             * if sender==PictureBox
+             *       
+             *  
+             * else
+             */
+        }
+
+        public Piece RemovePieceFromPlayerList(Control destinationSquare, Player currentPlayer)
+        {
+            Piece pieceToRemove;
+            if (currentPlayer == player1)
+            {
+                foreach(var piece in player2.GetPieces())
                 {
-                    if (selectedPieceImage != null &&
-                        pieceFromImage.ValidMove(player1.getPointFromDestination(destinationSquare, chessBoard),allPieces))
+                    if (chessBoard.GetCellPosition(destinationSquare).Row==piece.GetPiecePosition().X&&
+                        chessBoard.GetCellPosition(destinationSquare).Column == piece.GetPiecePosition().Y)
                     {
-                        panelOfPieceImage.Controls.Remove(selectedPieceImage);
-                        destinationSquare.Controls.Add(selectedPieceImage);
-                        Point destinationSquarePos = new Point();
-                        destinationSquarePos.X = chessBoard.GetCellPosition(destinationSquare).Row;
-                        destinationSquarePos.Y = chessBoard.GetCellPosition(destinationSquare).Column;
-                        UpdateMatrix(pieceFromImage.GetPiecePosition());
-                        pieceFromImage.SetPosition(destinationSquarePos);
-                        InitPieceMatrix(player1, player2);
-                        ShowMatrix(allPieces);
+                        pieceToRemove = piece;
+                        return pieceToRemove;
                     }
                 }
             }
+
+
+            if (currentPlayer == player2)
+            {
+                foreach (var piece in player1.GetPieces())
+                {
+                    if (chessBoard.GetCellPosition(destinationSquare).Row == piece.GetPiecePosition().X &&
+                        chessBoard.GetCellPosition(destinationSquare).Column == piece.GetPiecePosition().Y)
+                    {
+                        pieceToRemove = piece;
+                        return pieceToRemove;
+                    }
+                }
+            }
+            return null;
+        }
+
+        private void RemovePictureBox(Control destinationSquare)
+        {
+            destinationSquare.Controls.RemoveAt(0);
+        }
+
+        private bool PanelHasImage(Control destinationSquare)
+        {
+            if(destinationSquare.HasChildren == true)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void SwitchPlayer()
+        {
+            if (currentPlayer == player1)
+            {
+                foreach(var piece in player1.GetPieces()) {
+                    piece.GetPieceImage().Enabled = false;    
+                }
+                foreach (var piece in player2.GetPieces())
+                {
+                    piece.GetPieceImage().Enabled = true;
+                }
+            }
+            if (currentPlayer == player2)
+            {
+                foreach (var piece in player2.GetPieces())
+                {
+                    piece.GetPieceImage().Enabled = false;
+                }
+                foreach (var piece in player1.GetPieces())
+                {
+                    piece.GetPieceImage().Enabled = true;
+                }
+            }
+            currentPlayer = (currentPlayer == player1) ? player2 : player1;
         }
         public void StartGame()
         {
@@ -130,7 +220,6 @@ namespace Chess
         public void UpdateMatrix(Point pos)
         {
             allPieces[pos.X, pos.Y] = 0;
-            allPieces[5, 5] = 2;
         }
         public void InitPieceMatrix(Player p1, Player p2)
         {
@@ -171,6 +260,5 @@ namespace Chess
                 Console.WriteLine();
             }
         }
-        
     }
 }

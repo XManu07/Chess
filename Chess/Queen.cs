@@ -44,7 +44,7 @@ namespace Chess
                 }
 
             }
-            if (GetPiecePosition().Y == destination.Y)
+            else if (GetPiecePosition().Y == destination.Y)
             {
                 for (int i = GetPiecePosition().X + 1; i < destination.X; i++)
                 {
@@ -57,7 +57,7 @@ namespace Chess
                         return false;
                 }
             }
-            if (GetPiecePosition().X - destination.X < 0)
+            else if (GetPiecePosition().X - destination.X < 0)
             {
                 int j = destination.Y;
                 for (int i = destination.X - 1; i > GetPiecePosition().X; i--)
@@ -69,7 +69,7 @@ namespace Chess
                         return false;
                 }
             }
-            if (GetPiecePosition().X - destination.X > 0)
+            else if (GetPiecePosition().X - destination.X > 0)
             {
                 int j = destination.Y;
                 for (int i = destination.X + 1; i < GetPiecePosition().X; i++)

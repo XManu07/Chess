@@ -79,9 +79,9 @@ namespace Chess
         public bool SquareIsOpositePiece(Point destination, int[,] allPieces)
         {
             if(pieceColor==Colors.black)
-                return (allPieces[destination.X,destination.Y]==2) ? true : false;
+                return (allPieces[destination.X,destination.Y]==1|| allPieces[destination.X, destination.Y] == 2) ? true : false;
             if(pieceColor==Colors.white)
-                return (allPieces[destination.X,destination.Y] == 1) ? true : false;
+                return (allPieces[destination.X,destination.Y] == 9|| allPieces[destination.X, destination.Y] == 1) ? true : false;
             return false;
         }
         public bool SquareIsOpositeKing(Point destination, int[,] allPieces)

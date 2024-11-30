@@ -75,6 +75,10 @@ namespace Chess
         //        destination = image;
         //    }
         //}   
+        public void RemovePiece(Piece piece)
+        {
+            pieces.Remove(piece);
+        }
         public Point getPointFromDestination(Control destination, TableLayoutPanel chessBoard)
         {
             Point destinationPosition = new Point();

@@ -41,19 +41,15 @@ namespace Chess
         {
             if(GetPieceColor() == Colors.black)
             {
-                if (GetPiecePosition().X == 6 &&
-                    destination.X + 2 == GetPiecePosition().X &&
-                    GetPiecePosition().Y == destination.Y &&
-                    allPieces[destination.X - 1, destination.Y] == 0)
+                if (destination.X + 1 == GetPiecePosition().X &&
+                    (GetPiecePosition().Y == destination.Y-1||GetPiecePosition().Y==destination.Y+1))
                     return true;
                 else return false;
             }
             if (GetPieceColor() == Colors.white)
             {
-                if (this.GetPiecePosition().X == 1 &&
-                    destination.X - 2 == GetPiecePosition().X &&
-                    GetPiecePosition().Y == destination.Y &&
-                    allPieces[destination.X + 1, destination.Y] == 0)
+                if (destination.X - 1 == GetPiecePosition().X &&
+               (GetPiecePosition().Y == destination.Y - 1 || GetPiecePosition().Y == destination.Y + 1))
                     return true;
                 else return false;
             }

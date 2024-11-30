@@ -18,7 +18,7 @@ namespace Chess
             SetPosition(position);
             SetPieceImage();
         }
-        public bool SquareValid(Point destination)
+        public bool SquareValid(Point destination,int[,]allPieces)
         {
             if (Math.Abs(GetPiecePosition().X - destination.X) <= 1 && Math.Abs(GetPiecePosition().Y - destination.Y) <= 1)
                 return true;
@@ -26,9 +26,9 @@ namespace Chess
         }
         internal override bool ValidMove(Point destination, int[,] allPieces)
         {
-            if (SquareValid(destination) && SquareIsEmpty(destination, allPieces))
+            if (SquareValid(destination,allPieces) && SquareIsEmpty(destination, allPieces))
                 return true;
-            if(SquareValid(destination)&& SquareIsOpositePiece(destination,allPieces))
+            if(SquareValid(destination, allPieces)&& SquareIsOpositePiece(destination,allPieces)&&!SquareIsOpositeKing(destination,allPieces))
                 return true;
             return false;
         }
