@@ -20,6 +20,15 @@ namespace Chess
         {
             return playerColorOfPieces;
         }
+        public Point GetOpponentKingPoint()
+        {
+            foreach (Piece piece in pieces)
+            {
+                if (piece.GetPieceName() == PieceNames.king)
+                    return piece.GetPiecePosition();
+            }
+            return new Point(-1,-1);
+        }
         public Player(Colors color)
         {
             this.playerColorOfPieces = color;
@@ -86,21 +95,38 @@ namespace Chess
             destinationPosition.Y = chessBoard.GetPositionFromControl(destination).Column;
             return destinationPosition;
         }
-        public Piece GetPieceFromImage(PictureBox image, TableLayoutPanel chessBoard)
+        public Piece GetPieceFromImage(Panel image, TableLayoutPanel chessBoard)
         {
-            Panel parent = image.Parent as Panel;
             foreach (var piece in pieces)
             {
-                if (piece.GetPiecePosition().X == chessBoard.GetCellPosition(parent).Row
-                    && piece.GetPiecePosition().Y == chessBoard.GetCellPosition(parent).Column)
+                if (piece.GetPiecePosition().X == chessBoard.GetCellPosition(image).Row
+                    && piece.GetPiecePosition().Y == chessBoard.GetCellPosition(image).Column)
                 {
                     return piece;
                 }
             }
             return null;
         }
+
+        internal bool Check(Point kingPos, Player opponentPlayer, int[,] allPieces, Piece pieceFromImage=null, Point point=default )
+        {
+            Point oldPosition = pieceFromImage.GetPiecePosition();
+            pieceFromImage.SetPosition(point);
+            int[,] oldMatrix = allPieces;
+            allPieces[oldPosition.X, oldPosition.Y] = 0;
+            allPieces[point.X, point.Y] = 1;
+            foreach(Piece piece in opponentPlayer.GetPieces())
+            {
+                if (piece.KingPosIsValidMove(kingPos,allPieces))
+                    return true;
+            }
+            pieceFromImage.SetPosition(oldPosition);
+            allPieces = oldMatrix;
+            return false;
+            
+        }
         #endregion
 
-        
+
     }
 }

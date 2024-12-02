@@ -23,6 +23,25 @@ namespace Chess
             SetPosition(position);
             SetPieceImage();
         }
+
+        public override bool ValidSquare(Point destination)
+        {
+            if ((Math.Abs(GetPiecePosition().X - destination.X) == 2 && GetPiecePosition().Y == destination.Y && 
+                    (GetPiecePosition().X==1||GetPiecePosition().X==6))||
+                (Math.Abs(GetPiecePosition().X - destination.X) == 1 && GetPiecePosition().Y==destination.Y) ||
+                (Math.Abs(GetPiecePosition().X - destination.X) == 1 && Math.Abs(GetPiecePosition().Y - destination.Y) == 1))
+            return true;
+            return false;
+        }
+        public override bool PieceToDestinationIsEmpty(Point destination, int[,] allPieces)
+        {
+            if(CanTakeFrontPiece(destination,allPieces))
+            {
+                return true;
+            }
+            return false;
+        }
+
         public bool OnePositionIsValid(Point destination,int[,] allPieces)
         {
             if(this.GetPieceColor() == Colors.black)
@@ -79,15 +98,16 @@ namespace Chess
         }
         internal override bool ValidMove(Point destination, int[,] allPieces)
         {
-            if (OnePositionIsValid(destination,allPieces))
+
+            if (OnePositionIsValid(destination, allPieces))
             {
-                if( SquareIsEmpty(destination, allPieces) )
+                if (SquareIsEmpty(destination, allPieces))
                     return true;
             }
             if (CanTakeFrontPiece(destination, allPieces))
             {
-                if (SquareIsOpositePiece(destination, allPieces)&& !SquareIsOpositeKing(destination,allPieces))
-                    return true;           
+                if (SquareIsOpositePiece(destination, allPieces) && !SquareIsOpositeKing(destination, allPieces))
+                    return true;
             }
             if (TwoPositionIsValid(destination, allPieces))
                 return true;

@@ -20,7 +20,8 @@ namespace Chess
             SetPosition(position);
             SetPieceImage();
         }
-        public bool ValidSquare(Point destination)
+
+        public override bool ValidSquare(Point destination)
         {
             if ((GetPiecePosition().X == destination.X + 2 && GetPiecePosition().Y == destination.Y + 1) ||
                 (GetPiecePosition().X == destination.X + 2 && GetPiecePosition().Y == destination.Y - 1) ||
@@ -33,6 +34,11 @@ namespace Chess
                 return true;
             return false;
         }
+        public override bool PieceToDestinationIsEmpty(Point destination, int[,] allPieces)
+        {
+            return true;
+        }
+
         internal override bool ValidMove(Point destination, int[,] allPieces)
         {
             if (ValidSquare(destination))

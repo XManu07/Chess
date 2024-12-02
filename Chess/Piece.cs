@@ -37,12 +37,17 @@ namespace Chess
             piecePosition.X = pos.X;
             piecePosition.Y = pos.Y;
         }
+        public void SetPosition(int x,int y)
+        {
+            piecePosition.X = x;
+            piecePosition.Y = y;
+        }
         public Point GetPiecePosition()
         {
             return piecePosition;
         }
         #endregion
-
+         
         #region Set,Get PieceImage
         public void SetPieceImage()
         {
@@ -67,7 +72,20 @@ namespace Chess
             return "[Piece=" + pieceName + ",color=" + pieceColor + ",position="
                 + piecePosition.X + "," + piecePosition.Y + "]";
         }
-        internal abstract bool ValidMove(Point destination,int[,] allPieces);
+        internal abstract bool ValidMove(Point destination,int[,] allPiecess);
+        public virtual bool KingPosIsValidMove(Point kingPos, int[,] allPieces)
+        {
+            if (ValidSquare(kingPos))
+            {
+                if (PieceToDestinationIsEmpty(kingPos, allPieces))
+                    return true;
+                    //if (SquareIsOpositeKing(destination, allPieces))              
+            }
+            return false;
+        }
+        public abstract bool ValidSquare(Point destination);
+        public abstract bool PieceToDestinationIsEmpty(Point destination,int[,]allPieces);
+
         public bool SquareIsEmpty(Point destination, int[,] allPieces)
         {
             return (allPieces[destination.X, destination.Y] == 0) ? true : false;
@@ -81,7 +99,7 @@ namespace Chess
             if(pieceColor==Colors.black)
                 return (allPieces[destination.X,destination.Y]==1|| allPieces[destination.X, destination.Y] == 2) ? true : false;
             if(pieceColor==Colors.white)
-                return (allPieces[destination.X,destination.Y] == 9|| allPieces[destination.X, destination.Y] == 1) ? true : false;
+                return (allPieces[destination.X,destination.Y] == 9|| allPieces[destination.X, destination.Y] == 8) ? true : false;
             return false;
         }
         public bool SquareIsOpositeKing(Point destination, int[,] allPieces)
