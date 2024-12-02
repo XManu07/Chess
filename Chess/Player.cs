@@ -108,21 +108,53 @@ namespace Chess
             return null;
         }
 
-        internal bool Check(Point kingPos, Player opponentPlayer, int[,] allPieces, Piece pieceFromImage=null, Point point=default )
+        internal bool Check(Point kingPos, Player opponentPlayer, BoardMatrix matrix, Piece pieceFromImage, Point destPos=default )
         {
+          
+            int check = 0;
             Point oldPosition = pieceFromImage.GetPiecePosition();
-            pieceFromImage.SetPosition(point);
-            int[,] oldMatrix = allPieces;
-            allPieces[oldPosition.X, oldPosition.Y] = 0;
-            allPieces[point.X, point.Y] = 1;
+            pieceFromImage.SetPosition(destPos);              
+            int[,] initialMatrix = new int[8, 8];                  
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    initialMatrix[i, j] = matrix.allPieces[i, j];
+                }
+            }
+
+            if (matrix.allPieces[destPos.X,destPos.Y]!=0)
+            {
+                foreach(Piece piece in opponentPlayer.pieces)
+                {
+                    if (piece.GetPiecePosition() == destPos)
+                        piece.SetPosition(default);
+                }
+            }
+            matrix.UpdateMatrix(oldPosition);                  
+            matrix.InitPieceMatrix(this,opponentPlayer);
+
+            if (pieceFromImage.GetPieceName() == PieceNames.king)
+            {
+                kingPos = destPos;
+            }
             foreach(Piece piece in opponentPlayer.GetPieces())
             {
-                if (piece.KingPosIsValidMove(kingPos,allPieces))
-                    return true;
+                //update king pos if i move the pieve
+                if (piece.KingPosIsValidMove(kingPos, matrix.allPieces))
+                    check = 1;
             }
-            pieceFromImage.SetPosition(oldPosition);
-            allPieces = oldMatrix;
-            return false;
+
+            pieceFromImage.SetPosition(oldPosition);            
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    matrix.allPieces[i, j] =initialMatrix [i, j];
+                }
+            }                      
+
+            return check==1?true:false;
             
         }
         #endregion

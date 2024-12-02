@@ -23,7 +23,7 @@ namespace Chess
         private Player currentPlayer;
         private Player opponentPlayer;
 
-        private int[,] allPieces=new int[8,8];
+        BoardMatrix boardMatrix;
         private Piece pieceToRemove;
 
         private PictureBox selectedPieceImage;
@@ -37,8 +37,7 @@ namespace Chess
             InitBoardBackground();
             InitPlayers();
             InitPieces();
-            InitPieceMatrix(player1,player2);
-            ShowMatrix(allPieces);
+            boardMatrix=new BoardMatrix(player1,player2);
             StartGame();
         }
 
@@ -108,10 +107,10 @@ namespace Chess
 
             if (selectedPieceImage != null &&
                 pieceFromImage !=null &&
-                pieceFromImage.ValidMove(currentPlayer.getPointFromDestination(destinationSquare, chessBoard), allPieces))
+                pieceFromImage.ValidMove(currentPlayer.getPointFromDestination(destinationSquare, chessBoard), boardMatrix.allPieces))
             {
-                currentKingPosition = currentPlayer.GetOpponentKingPoint();
-                if (currentPlayer.Check(currentKingPosition, opponentPlayer, allPieces,pieceFromImage,
+                currentKingPosition = currentPlayer.GetOpponentKingPoint();//change name
+                if (currentPlayer.Check(currentKingPosition, opponentPlayer, boardMatrix,pieceFromImage,
                     new Point(chessBoard.GetCellPosition(destinationSquare).Row, chessBoard.GetCellPosition(destinationSquare).Column)))
                 {
                     Console.WriteLine("Check");
@@ -138,10 +137,10 @@ namespace Chess
         {
             parentSelectedImage.Controls.Remove(selectedPieceImage);
             destinationSquare.Controls.Add(selectedPieceImage);
-            UpdateMatrix(pieceFromImage.GetPiecePosition());
+            boardMatrix.UpdateMatrix(pieceFromImage.GetPiecePosition());
             pieceFromImage.SetPosition(chessBoard.GetCellPosition(destinationSquare).Row, chessBoard.GetCellPosition(destinationSquare).Column);
-            InitPieceMatrix(player1, player2);
-            ShowMatrix(allPieces);
+            boardMatrix.InitPieceMatrix(player1, player2);
+            boardMatrix.ShowMatrix();
         }
         public Piece GetPieceToRemove(Control destinationSquare, Player currentPlayer)
         {
@@ -209,50 +208,5 @@ namespace Chess
             }
         }
 
-        #region Matrix
-        public void UpdateMatrix(Point pos)
-        {
-            allPieces[pos.X, pos.Y] = 0;
-        }
-        public void InitPieceMatrix(Player p1, Player p2)
-        {
-            foreach(var piece in p1.GetPieces())
-            {
-                allPieces[piece.GetPiecePosition().X,piece.GetPiecePosition().Y] = (int)p1.GetPlayerColor();
-                //init king
-                if (piece.GetPieceName() == PieceNames.king)
-                { 
-                    if (p1.GetPlayerColor() == Colors.black)
-                        allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)Pieces.blackKing;
-                    if (p1.GetPlayerColor() == Colors.white)
-                        allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)Pieces.whiteKing;
-                }
-            }
-
-            foreach (var piece in p2.GetPieces())
-            {
-                allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)p2.GetPlayerColor();
-                //init king 
-                if (piece.GetPieceName() == PieceNames.king)
-                   {
-                    if (p2.GetPlayerColor() == Colors.black)
-                        allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)Pieces.blackKing;
-                    if (p2.GetPlayerColor() == Colors.white)
-                        allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)Pieces.whiteKing;
-                }
-            }
-        }
-        public void ShowMatrix(int[,] pieces)
-        {
-            for (int line=0;line<8;line++)
-            {
-                for(int column = 0; column < 8; column++)
-                {
-                    Console.Write(allPieces[line, column] + " ");
-                }
-                Console.WriteLine();
-            }
-        }
-        #endregion 
     }
 }
