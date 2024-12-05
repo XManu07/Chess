@@ -21,24 +21,24 @@ namespace Chess
             SetPosition(position);
             SetPieceImage();
         }
-        public bool ValidSquare (Point destination)
+        public override bool ValidDestination (Point destination)
         {
             if (Math.Abs(destination.X - this.GetPiecePosition().X) == Math.Abs(this.GetPiecePosition().Y - destination.Y))
                 return true;
             return false;
         }
-        private bool BishopToDestinationIsEmpty(Point destination, int[,] allPieces)
+        public override bool PieceToDestinationIsEmpty(Point destination)
         {
-            if(GetPiecePosition().X-destination.X< 0)
+            if (GetPiecePosition().X - destination.X < 0)
             {
                 int j = destination.Y;
                 for (int i = destination.X - 1; i > GetPiecePosition().X; i--)
-                {   
+                {
                     if (GetPiecePosition().Y - destination.Y > 0)
                         j++;
                     else j--;
-                    if (!SquareIsEmpty(i, j, allPieces))
-                        return false;      
+                    if (!matrix.MSquareIsEmpty(i, j))
+                        return false;
                 }
             }
             if (GetPiecePosition().X - destination.X > 0)
@@ -49,27 +49,27 @@ namespace Chess
                     if (GetPiecePosition().Y - destination.Y > 0)
                         j++;
                     else j--;
-                    if (!SquareIsEmpty(i, j, allPieces))
+                    if (!matrix.MSquareIsEmpty(i, j))
                         return false;
                 }
             }
             return true;
         }
-
-        internal override bool ValidMove(Point destination, int[,] allPieces)
+        internal override bool ValidMove(Point destination)
         {
             
-            if(ValidSquare(destination))
+            if(ValidDestination(destination))
             {
-                if (BishopToDestinationIsEmpty(destination, allPieces)&&SquareIsEmpty(destination,allPieces))
+                if (PieceToDestinationIsEmpty(destination)&&matrix.MSquareIsEmpty(destination))
                     return true;
-                if(BishopToDestinationIsEmpty(destination, allPieces))
+                if(PieceToDestinationIsEmpty(destination))
                 {
-                    if(SquareIsOpositePiece(destination, allPieces)&&!SquareIsOpositeKing(destination,allPieces)) 
+                    if(matrix.MSquareIsOppositePiece(destination, GetPieceColor())&&!matrix.MSquareIsOppositeKing(destination,GetPieceColor())) 
                         return true;
                 }
             }
             return false;
         }
+
     }
 }

@@ -20,7 +20,8 @@ namespace Chess
             SetPosition(position);
             SetPieceImage();
         }
-        public bool ValidSquare(Point destination)
+
+        public override bool ValidDestination(Point destination)
         {
             if ((GetPiecePosition().X == destination.X + 2 && GetPiecePosition().Y == destination.Y + 1) ||
                 (GetPiecePosition().X == destination.X + 2 && GetPiecePosition().Y == destination.Y - 1) ||
@@ -33,13 +34,18 @@ namespace Chess
                 return true;
             return false;
         }
-        internal override bool ValidMove(Point destination, int[,] allPieces)
+        public override bool PieceToDestinationIsEmpty(Point destination)
         {
-            if (ValidSquare(destination))
+            return true;
+        }
+
+        internal override bool ValidMove(Point destination)
+        {
+            if (ValidDestination(destination))
             {
-                if (SquareIsEmpty(destination, allPieces))
+                if (matrix.MSquareIsEmpty(destination))
                     return true;
-                if (SquareIsOpositePiece(destination, allPieces) && !SquareIsOpositeKing(destination, allPieces))
+                if (matrix.MSquareIsOppositePiece(destination, GetPieceColor()) && !matrix.MSquareIsOppositeKing(destination, GetPieceColor()))
                     return true;
             }
            return false;

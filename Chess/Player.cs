@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -19,6 +20,15 @@ namespace Chess
         public Colors GetPlayerColor()
         {
             return playerColorOfPieces;
+        }
+        public Point GetOpponentKingPoint()
+        {
+            foreach (Piece piece in pieces)
+            {
+                if (piece.GetPieceName() == PieceNames.king)
+                    return piece.GetPiecePosition();
+            }
+            return new Point(-1,-1);
         }
         public Player(Colors color)
         {
@@ -75,6 +85,10 @@ namespace Chess
         //        destination = image;
         //    }
         //}   
+        public void RemovePiece(Piece piece)
+        {
+            pieces.Remove(piece);
+        }
         public Point getPointFromDestination(Control destination, TableLayoutPanel chessBoard)
         {
             Point destinationPosition = new Point();
@@ -82,21 +96,70 @@ namespace Chess
             destinationPosition.Y = chessBoard.GetPositionFromControl(destination).Column;
             return destinationPosition;
         }
-        public Piece GetPieceFromImage(PictureBox image, TableLayoutPanel chessBoard)
+        public Piece GetPieceFromImage(Panel image, TableLayoutPanel chessBoard)
         {
-            Panel parent = image.Parent as Panel;
             foreach (var piece in pieces)
             {
-                if (piece.GetPiecePosition().X == chessBoard.GetCellPosition(parent).Row
-                    && piece.GetPiecePosition().Y == chessBoard.GetCellPosition(parent).Column)
+                if (piece.GetPiecePosition().X == chessBoard.GetCellPosition(image).Row
+                    && piece.GetPiecePosition().Y == chessBoard.GetCellPosition(image).Column)
                 {
                     return piece;
                 }
             }
             return null;
         }
-        #endregion
 
+        public bool Check(Point kingPos, Player opponentPlayer, BoardMatrix matrix, Piece pieceFromImage, Point destPos=default )
+        {
+            int[,] initialMatrix = new int[8, 8];                  
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    initialMatrix[i, j] = matrix.allPieces[i, j];
+                }
+            }
+            Point oldPosition = pieceFromImage.GetPiecePosition();
+            
+            int check = 0;
+            pieceFromImage.SetPosition(destPos); 
+
+            if (matrix.allPieces[destPos.X,destPos.Y]!=0)
+            {
+                foreach(Piece piece in opponentPlayer.pieces)
+                {
+                    if (piece.GetPiecePosition() == destPos)
+                        piece.SetPosition(default);
+                }
+            }
+            matrix.MUpdateOldPos(oldPosition);
+            matrix.MInitPieces(this,opponentPlayer);
+          
+            if (pieceFromImage.GetPieceName() == PieceNames.king)
+            {
+                kingPos = destPos;
+            }
+            foreach(Piece piece in opponentPlayer.GetPieces())
+            {
+                if (piece.KingPosIsValidMove(kingPos))
+                    check = 1;
+            }
+
+
+            pieceFromImage.SetPosition(oldPosition);            
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    matrix.allPieces[i, j] =initialMatrix [i, j];
+                }
+            }                      
+
+            return check==1?true:false;
+            
+        }
+        #endregion
         
+
     }
 }

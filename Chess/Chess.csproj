@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Bishop.cs" />
     <Compile Include="Board.cs" />
+    <Compile Include="BoardMatrix.cs" />
     <Compile Include="FChessGame.cs">
       <SubType>Form</SubType>
     </Compile>
