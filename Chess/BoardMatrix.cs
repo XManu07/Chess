@@ -12,52 +12,69 @@ namespace Chess
         public int[,] allPieces = new int[8, 8];
         public BoardMatrix(Player p1,Player p2) 
         {
-            InitPieceMatrix(p1, p2);
-            ShowMatrix();
+            MInitPieces(p1, p2);
+            MShow();
         }
-        public void InitPieceMatrix(Player p1, Player p2)
+        public void MInitPieces(Player p1, Player p2)
         {
             foreach (var piece in p1.GetPieces())
             {
-                allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)p1.GetPlayerColor();
-                //init king
-                if (piece.GetPieceName() == PieceNames.king)
-                {
-                    if (p1.GetPlayerColor() == Colors.black)
-                        allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)Pieces.blackKing;
-                    if (p1.GetPlayerColor() == Colors.white)
-                        allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)Pieces.whiteKing;
-                }
+                allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)piece.GetPieceName()*(int)piece.GetPieceColor();   
             }
 
             foreach (var piece in p2.GetPieces())
             {
-                allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)p2.GetPlayerColor();
-                //init king 
-                if (piece.GetPieceName() == PieceNames.king)
-                {
-                    if (p2.GetPlayerColor() == Colors.black)
-                        allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)Pieces.blackKing;
-                    if (p2.GetPlayerColor() == Colors.white)
-                        allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)Pieces.whiteKing;
-                }
+                allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)piece.GetPieceName() * (int)piece.GetPieceColor();
             }
         }
-        public void ShowMatrix()
+        public void MShow()
         {
             for (int line = 0; line < 8; line++)
             {
                 for (int column = 0; column < 8; column++)
                 {
-                    Console.Write(allPieces[line, column] + " ");
+                    Console.Write("{0,3}",allPieces[line, column]);
                 }
                 Console.WriteLine();
             }
         }
-        public void UpdateMatrix(Point oldPos)
+        public void MUpdateOldPos(Point oldPos)
         {
             allPieces[oldPos.X, oldPos.Y] = 0;
         }
+
+        public bool MSquareIsEmpty(Point destination)
+        {
+            return (allPieces[destination.X, destination.Y] == 0) ? true : false;
+        }
+        public bool MSquareIsEmpty(int x, int y)
+        {
+            return allPieces[x, y] == (int)PieceNames.gol ? true : false;
+        }
+
+        public bool MSquareIsOppositePiece(Point destination,Colors pieceColor)
+        {
+            if (pieceColor == Colors.black)
+                return (allPieces[destination.X, destination.Y]>0) ? true : false;
+            if (pieceColor == Colors.white)
+                return (allPieces[destination.X, destination.Y]<0) ? true : false;
+            return false;
+        }
+        public bool MSquareIsKing(Point destination)
+        {
+            if (allPieces[destination.X, destination.Y] == (int)PieceNames.king*(int)Colors.white || 
+                allPieces[destination.X, destination.Y] == (int)PieceNames.king*(int)Colors.white)
+                return true;
+            return false;
+        }
+        public bool MSquareIsOppositeKing(Point destination,Colors pieceColor)
+        {
+            if (MSquareIsOppositePiece(destination,pieceColor))
+                if (MSquareIsKing(destination))
+                    return true;
+            return false;
+        }
+
 
     }
 }

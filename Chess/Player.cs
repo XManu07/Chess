@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -108,12 +109,8 @@ namespace Chess
             return null;
         }
 
-        internal bool Check(Point kingPos, Player opponentPlayer, BoardMatrix matrix, Piece pieceFromImage, Point destPos=default )
+        public bool Check(Point kingPos, Player opponentPlayer, BoardMatrix matrix, Piece pieceFromImage, Point destPos=default )
         {
-          
-            int check = 0;
-            Point oldPosition = pieceFromImage.GetPiecePosition();
-            pieceFromImage.SetPosition(destPos);              
             int[,] initialMatrix = new int[8, 8];                  
             for (int i = 0; i < 8; i++)
             {
@@ -122,6 +119,10 @@ namespace Chess
                     initialMatrix[i, j] = matrix.allPieces[i, j];
                 }
             }
+            Point oldPosition = pieceFromImage.GetPiecePosition();
+            
+            int check = 0;
+            pieceFromImage.SetPosition(destPos); 
 
             if (matrix.allPieces[destPos.X,destPos.Y]!=0)
             {
@@ -131,19 +132,19 @@ namespace Chess
                         piece.SetPosition(default);
                 }
             }
-            matrix.UpdateMatrix(oldPosition);                  
-            matrix.InitPieceMatrix(this,opponentPlayer);
-
+            matrix.MUpdateOldPos(oldPosition);
+            matrix.MInitPieces(this,opponentPlayer);
+          
             if (pieceFromImage.GetPieceName() == PieceNames.king)
             {
                 kingPos = destPos;
             }
             foreach(Piece piece in opponentPlayer.GetPieces())
             {
-                //update king pos if i move the pieve
-                if (piece.KingPosIsValidMove(kingPos, matrix.allPieces))
+                if (piece.KingPosIsValidMove(kingPos))
                     check = 1;
             }
+
 
             pieceFromImage.SetPosition(oldPosition);            
             for (int i = 0; i < 8; i++)
@@ -158,7 +159,7 @@ namespace Chess
             
         }
         #endregion
-
+        
 
     }
 }

@@ -18,31 +18,31 @@ namespace Chess
             SetPosition(position);
             SetPieceImage();
         }
-        public override bool ValidSquare(Point destination)
-        {
-            return false;
-        }
 
-        public override bool PieceToDestinationIsEmpty(Point destination, int[,] allPieces)
+        public override bool ValidDestination(Point destination)
         {
             return false;
         }
-        public  bool ValidSquare(Point destination,int[,]allPieces)
+        public override bool PieceToDestinationIsEmpty(Point destination)
+        {
+            return false;
+        }
+        public  bool ValidSquare(Point destination)
         {
             if (Math.Abs(GetPiecePosition().X - destination.X) <= 1 && Math.Abs(GetPiecePosition().Y - destination.Y) <= 1)
-                if (!OneSquareIsKing(destination,allPieces))
+                if (!OneSquareIsKing(destination))
                     return true;
             return false;
         }
 
-        private bool OneSquareIsKing(Point destination, int[,] allPieces)
+        private bool OneSquareIsKing(Point destination)
         {
             for(int i = destination.X - 1; i <= destination.X + 1; i++)
             {
                 if (PositionIsInMatrix(i, destination.Y-1))
                 {
                     Point dest=new Point(i, destination.Y-1);
-                    if (SquareIsOpositeKing(dest, allPieces))
+                    if (matrix.MSquareIsOppositeKing(dest,GetPieceColor()))
                     {
                         return true;
                     }
@@ -50,7 +50,7 @@ namespace Chess
                 if (PositionIsInMatrix(i, destination.Y +1))
                 {
                     Point dest = new Point(i, destination.Y + 1);
-                    if (SquareIsOpositeKing(dest, allPieces))
+                    if (matrix.MSquareIsOppositeKing(dest, GetPieceColor()))
                     {
                         return true;
                     }
@@ -59,7 +59,7 @@ namespace Chess
             if (PositionIsInMatrix(destination.X+1, destination.Y))
             {
                 Point dest = new Point(destination.X+1, destination.Y);
-                if (SquareIsOpositeKing(dest, allPieces))
+                if (matrix.MSquareIsOppositeKing(dest, GetPieceColor()))
                 {
                     return true;
                 }
@@ -67,7 +67,7 @@ namespace Chess
             if (PositionIsInMatrix(destination.X-1, destination.Y ))
             {
                 Point dest = new Point(destination.X-1, destination.Y );
-                if (SquareIsOpositeKing(dest, allPieces))
+                if (matrix.MSquareIsOppositeKing(dest,GetPieceColor()))
                 {
                     return true;
                 }
@@ -81,11 +81,11 @@ namespace Chess
             return false;
         }
 
-        internal override bool ValidMove(Point destination, int[,] allPieces)
+        internal override bool ValidMove(Point destination)
         {
-            if (ValidSquare(destination,allPieces) && SquareIsEmpty(destination, allPieces))
+            if (ValidSquare(destination) && matrix.MSquareIsEmpty(destination))
                 return true;
-            if(ValidSquare(destination, allPieces)&& SquareIsOpositePiece(destination,allPieces)&&!SquareIsOpositeKing(destination,allPieces))
+            if(ValidSquare(destination)&& matrix.MSquareIsOppositePiece(destination,GetPieceColor()))
                 return true;
             return false;
         }

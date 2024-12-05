@@ -17,7 +17,10 @@ namespace Chess
     public partial class FChessGame : Form
 
     {
-        PictureBox pictureToBeMoved=null;
+        //here I is necessary to  have only the graphics(frontend),
+        //and send to the server the location of the moved Piece(before and after move)
+        //server validate the move and if is valid will wait for the other player to move,
+        //and if it s not the player should move another piece
         GameLogic game;
 
         public FChessGame()

@@ -21,13 +21,13 @@ namespace Chess
             SetPosition(position);
             SetPieceImage();
         }
-        public override bool ValidSquare (Point destination)
+        public override bool ValidDestination (Point destination)
         {
             if (Math.Abs(destination.X - this.GetPiecePosition().X) == Math.Abs(this.GetPiecePosition().Y - destination.Y))
                 return true;
             return false;
         }
-        public override bool PieceToDestinationIsEmpty(Point destination, int[,] allPieces)
+        public override bool PieceToDestinationIsEmpty(Point destination)
         {
             if (GetPiecePosition().X - destination.X < 0)
             {
@@ -37,7 +37,7 @@ namespace Chess
                     if (GetPiecePosition().Y - destination.Y > 0)
                         j++;
                     else j--;
-                    if (!SquareIsEmpty(i, j, allPieces))
+                    if (!matrix.MSquareIsEmpty(i, j))
                         return false;
                 }
             }
@@ -49,22 +49,22 @@ namespace Chess
                     if (GetPiecePosition().Y - destination.Y > 0)
                         j++;
                     else j--;
-                    if (!SquareIsEmpty(i, j, allPieces))
+                    if (!matrix.MSquareIsEmpty(i, j))
                         return false;
                 }
             }
             return true;
         }
-        internal override bool ValidMove(Point destination, int[,] allPieces)
+        internal override bool ValidMove(Point destination)
         {
             
-            if(ValidSquare(destination))
+            if(ValidDestination(destination))
             {
-                if (PieceToDestinationIsEmpty(destination, allPieces)&&SquareIsEmpty(destination,allPieces))
+                if (PieceToDestinationIsEmpty(destination)&&matrix.MSquareIsEmpty(destination))
                     return true;
-                if(PieceToDestinationIsEmpty(destination, allPieces))
+                if(PieceToDestinationIsEmpty(destination))
                 {
-                    if(SquareIsOpositePiece(destination, allPieces)&&!SquareIsOpositeKing(destination,allPieces)) 
+                    if(matrix.MSquareIsOppositePiece(destination, GetPieceColor())&&!matrix.MSquareIsOppositeKing(destination,GetPieceColor())) 
                         return true;
                 }
             }

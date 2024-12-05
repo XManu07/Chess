@@ -12,8 +12,8 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Chess
 {
-    public enum Colors { white=1, black=9 };
-    public enum Pieces { blackKing=8,whiteKing=2}
+    public enum Colors { white=1, black=-1 };
+    
     internal class GameLogic
     {
         private TableLayoutPanel chessBoard;
@@ -37,7 +37,8 @@ namespace Chess
             InitBoardBackground();
             InitPlayers();
             InitPieces();
-            boardMatrix=new BoardMatrix(player1,player2);
+            Piece.matrix = new BoardMatrix(player1,player2);
+            boardMatrix=Piece.matrix;
             StartGame();
         }
 
@@ -107,7 +108,7 @@ namespace Chess
 
             if (selectedPieceImage != null &&
                 pieceFromImage !=null &&
-                pieceFromImage.ValidMove(currentPlayer.getPointFromDestination(destinationSquare, chessBoard), boardMatrix.allPieces))
+                pieceFromImage.ValidMove(currentPlayer.getPointFromDestination(destinationSquare, chessBoard)))
             {
                 currentKingPosition = currentPlayer.GetOpponentKingPoint();//change name
                 if (currentPlayer.Check(currentKingPosition, opponentPlayer, boardMatrix,pieceFromImage,
@@ -137,10 +138,10 @@ namespace Chess
         {
             parentSelectedImage.Controls.Remove(selectedPieceImage);
             destinationSquare.Controls.Add(selectedPieceImage);
-            boardMatrix.UpdateMatrix(pieceFromImage.GetPiecePosition());
+            boardMatrix.MUpdateOldPos(pieceFromImage.GetPiecePosition());
             pieceFromImage.SetPosition(chessBoard.GetCellPosition(destinationSquare).Row, chessBoard.GetCellPosition(destinationSquare).Column);
-            boardMatrix.InitPieceMatrix(player1, player2);
-            boardMatrix.ShowMatrix();
+            boardMatrix.MInitPieces(player1, player2);
+            boardMatrix.MShow();
         }
         public Piece GetPieceToRemove(Control destinationSquare, Player currentPlayer)
         {

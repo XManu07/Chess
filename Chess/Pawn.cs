@@ -24,7 +24,7 @@ namespace Chess
             SetPieceImage();
         }
 
-        public override bool ValidSquare(Point destination)
+        public override bool ValidDestination(Point destination)
         {
             if ((Math.Abs(GetPiecePosition().X - destination.X) == 2 && GetPiecePosition().Y == destination.Y && 
                     (GetPiecePosition().X==1||GetPiecePosition().X==6))||
@@ -33,16 +33,16 @@ namespace Chess
             return true;
             return false;
         }
-        public override bool PieceToDestinationIsEmpty(Point destination, int[,] allPieces)
+        public override bool PieceToDestinationIsEmpty(Point destination)
         {
-            if(CanTakeFrontPiece(destination,allPieces))
+            if(CanTakeFrontPiece(destination))
             {
                 return true;
             }
             return false;
         }
 
-        public bool OnePositionIsValid(Point destination,int[,] allPieces)
+        public bool OnePositionIsValid(Point destination)
         {
             if(this.GetPieceColor() == Colors.black)
             {
@@ -56,7 +56,7 @@ namespace Chess
             }
             return false;
         }
-        public bool CanTakeFrontPiece(Point destination, int[,] allPieces)
+        public bool CanTakeFrontPiece(Point destination)
         {
             if(GetPieceColor() == Colors.black)
             {
@@ -74,14 +74,14 @@ namespace Chess
             }
             return false;
         }
-        public bool TwoPositionIsValid(Point destination, int[,] allPieces)
+        public bool TwoPositionIsValid(Point destination)
         {   
             if(GetPieceColor()==Colors.black)
             {
                 if (GetPiecePosition().X == 6 &&
                     destination.X + 2 == GetPiecePosition().X &&
                     GetPiecePosition().Y == destination.Y &&
-                    SquareIsEmpty(destination.X+1, destination.Y, allPieces))
+                    matrix.MSquareIsEmpty(destination.X+1, destination.Y))
                     return true;
                 else return false;
             }
@@ -90,26 +90,26 @@ namespace Chess
                 if (GetPiecePosition().X == 1 &&
                     destination.X - 2 == GetPiecePosition().X &&
                     GetPiecePosition().Y == destination.Y &&
-                    SquareIsEmpty(destination.X - 1, destination.Y, allPieces))
+                    matrix.MSquareIsEmpty(destination.X - 1, destination.Y))
                     return true;
                 else return false;
             }
             return false;
         }
-        internal override bool ValidMove(Point destination, int[,] allPieces)
+        internal override bool ValidMove(Point destination)
         {
 
-            if (OnePositionIsValid(destination, allPieces))
+            if (OnePositionIsValid(destination))
             {
-                if (SquareIsEmpty(destination, allPieces))
+                if (matrix.MSquareIsEmpty(destination))
                     return true;
             }
-            if (CanTakeFrontPiece(destination, allPieces))
+            if (CanTakeFrontPiece(destination))
             {
-                if (SquareIsOpositePiece(destination, allPieces) && !SquareIsOpositeKing(destination, allPieces))
+                if (matrix.MSquareIsOppositePiece(destination,GetPieceColor()) && !matrix.MSquareIsOppositeKing(destination, GetPieceColor()))
                     return true;
             }
-            if (TwoPositionIsValid(destination, allPieces))
+            if (TwoPositionIsValid(destination))
                 return true;
             else return false;
         }
