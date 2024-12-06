@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Chess
 {
@@ -21,20 +22,19 @@ namespace Chess
         //and send to the server the location of the moved Piece(before and after move)
         //server validate the move and if is valid will wait for the other player to move,
         //and if it s not the player should move another piece
-        GameLogic game;
+        public enum Colors { white = 1, black = -1 };
 
+        Board board;
         public FChessGame()
         {
             InitializeComponent();
-            game = new GameLogic(this.chessBoard);
-            
+            board = new Board(chessBoard);
         }
-
+       
         private void btnExitGame_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            System.Windows.Forms.Application.Exit();
         }
-
         private void FChessGame_Load(object sender, EventArgs e)
         {
 
@@ -51,5 +51,6 @@ namespace Chess
             chessBoard.Location = new Point( (this.ClientSize.Width - size) / 2, (this.ClientSize.Height - size) / 2 ); 
         }
         #endregion
+
     }
 }

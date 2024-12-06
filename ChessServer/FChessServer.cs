@@ -8,23 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Chess
+namespace ChessServer
 {
-    public partial class FHome : Form
+    public partial class Form1 : Form
     {
-        FChessGame chessGame;
-        public FHome()
+        public Form1()
         {
             InitializeComponent();
-            chessGame=new FChessGame();
-            chessGame.ShowDialog();
         }
-
-        private void btnStartGame_Click(object sender, EventArgs e)
-        {
-            
-        }
-
- 
     }
 }
