@@ -17,11 +17,35 @@ namespace Chess
         private Colors playerColorOfPieces;
         private List<Piece> pieces;
 
+        private Point oldPiecePosition;
+        private Point newPiecePosition;
+
+        #region Set,Get 
+        public Point GetOldPiecePos()
+        {
+            return oldPiecePosition;
+        }
+        public void SetOldPiecePos(Point oldPos)
+        {
+            oldPiecePosition = oldPos;
+        }
+        public Point GetNewPiecePos()
+        {
+            return newPiecePosition;
+        }
+        public void SetNewPiecePos(Point newPos)
+        {
+            newPiecePosition= newPos;
+        }
         public Colors GetPlayerColor()
         {
             return playerColorOfPieces;
         }
-        public Point GetOpponentKingPoint()
+        public List<Piece> GetPieces()
+        {
+            return pieces;
+        }
+        public Point GetKingPoint()
         {
             foreach (Piece piece in pieces)
             {
@@ -30,12 +54,7 @@ namespace Chess
             }
             return new Point(-1,-1);
         }
-        public Player(Colors color)
-        {
-            this.playerColorOfPieces = color;
-            InitPieces();
-        }
-
+        #endregion
         #region Get Line from color
         public int GetPiecesLine()
         {
@@ -47,14 +66,14 @@ namespace Chess
             return fline== 0 ? fline + 1 : fline - 1;
         }
         #endregion
-        public List<Piece> GetPieces()
+
+        public Player(Colors color)
         {
-            return pieces;
+            this.playerColorOfPieces = color;
+            InitPieces();
         }
-        public void ShowPieces()
-        {
-            pieces.ForEach(p => { Console.WriteLine(p.ToString()); });
-        }
+
+        #region Pieces
         void InitPieces()
         { 
             pieces = new List<Piece>
@@ -74,41 +93,15 @@ namespace Chess
                 pieces.Add(new Pawn(playerColorOfPieces,new Point(GetPawnLine(),i)));
             }
         }
-
-        #region Move function
-        //public void Move(PictureBox image,Control destination,TableLayoutPanel chessBoard)
-        //{
-        //    Piece pieceFromImage=GetPieceFromImage(image,chessBoard);
-        //    Point destinationPosition = getPointFromDestination(destination, chessBoard);
-        //    if (pieceFromImage.ValidMove(destinationPosition))
-        //    {
-        //        destination = image;
-        //    }
-        //}   
+        public void ShowPieces()
+        {
+            pieces.ForEach(p => { Console.WriteLine(p.ToString()); });
+        }
         public void RemovePiece(Piece piece)
         {
             pieces.Remove(piece);
         }
-        public Point getPointFromDestination(Control destination, TableLayoutPanel chessBoard)
-        {
-            Point destinationPosition = new Point();
-            destinationPosition.X = chessBoard.GetPositionFromControl(destination).Row;
-            destinationPosition.Y = chessBoard.GetPositionFromControl(destination).Column;
-            return destinationPosition;
-        }
-        public Piece GetPieceFromImage(Panel image, TableLayoutPanel chessBoard)
-        {
-            foreach (var piece in pieces)
-            {
-                if (piece.GetPiecePosition().X == chessBoard.GetCellPosition(image).Row
-                    && piece.GetPiecePosition().Y == chessBoard.GetCellPosition(image).Column)
-                {
-                    return piece;
-                }
-            }
-            return null;
-        }
-
+        #endregion
         public bool Check(Point kingPos, Player opponentPlayer, BoardMatrix matrix, Piece pieceFromImage, Point destPos=default )
         {
             int[,] initialMatrix = new int[8, 8];                  
@@ -157,9 +150,7 @@ namespace Chess
 
             return check==1?true:false;
             
-        }
-        #endregion
-        
+        }        
 
     }
 }

@@ -16,7 +16,7 @@ namespace ChessServer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ChessServer());
+            Application.Run(new FChessServer());
         }
     }
 }

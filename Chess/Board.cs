@@ -20,17 +20,17 @@ namespace Chess
 
         PictureBox selectedImage;
 
-        Colors playerColor=Colors.black;//color from server
-        public Board(TableLayoutPanel chessBoard)
+        public Colors playerColor;
+        public Board(TableLayoutPanel chessBoard,Colors playerCol)
         {
             this.chessBoard = chessBoard;
+            SetPlayerColor(playerCol);
             InitBoardBackground();
             InitPieceImages();
         }
         public void SetPlayerColor(Colors playerColor)
         {
-            //this.playerColor = playerColor;
-            //wait for the server to send a color for player then
+            this.playerColor = playerColor;
         }
         public void InitBoardBackground()
         {
@@ -123,6 +123,7 @@ namespace Chess
                 destination.Controls.Add(selectedImage);
             }
             selectedImage = null;
+            Console.WriteLine(oldPiecePosition.ToString()+ " "+ newPiecePosition.ToString());
         }
         private bool PanelHasImage(Panel destination)
         {
