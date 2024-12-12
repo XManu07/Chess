@@ -1,20 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net.Sockets;
-using System.Reflection;
-using System.Resources;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Chess
 {
@@ -23,38 +12,50 @@ namespace Chess
     {
         public enum Colors { white = 1, black = -1 };
         Board board;
-        Colors playerColor;
 
         public TcpClient client;
-        public NetworkStream clientStream;
         public bool ascult;
         public Thread t;
+
+        public NetworkStream clientStream;
+        public StreamWriter writer;
+        public StreamReader reader;
+
+        public bool move;
+
         public FChessGame()
         {
             InitializeComponent();
-            client = new TcpClient("127.0.0.1", 3000);
+            client = new TcpClient("127.0.0.1", 3001);
             ascult = true;
+
+            clientStream = client.GetStream();
+            writer= new StreamWriter(clientStream);
+            writer.AutoFlush = true;
+            reader = new StreamReader(clientStream);
+            board = new Board(chessBoard,GetPlayerColor());
+            board.writer=writer;
+            board.reader=reader;
 
             t = new Thread(new ThreadStart(ClientListener));
             t.Start();
-            clientStream = client.GetStream();
-            GetPlayerColor();
-            Console.WriteLine("am ajuns aici");
-            board = new Board(chessBoard,playerColor);
+
+
         }
 
-        public void GetPlayerColor()
+        public Colors GetPlayerColor()
         {
-            StreamReader reader = new StreamReader(clientStream);
+            reader = new StreamReader(clientStream);
             string color=reader.ReadLine();
             Console.WriteLine("color from server is :" + color);
             if (color == "black")
             {
-                playerColor= Colors.black;
+                return Colors.black;
             }
             else
             {
-                playerColor= Colors.white;
+                move = true;
+                return Colors.white;
             }
         }
 
@@ -81,13 +82,42 @@ namespace Chess
 
         private void ClientListener()
         {
-            StreamReader read= new StreamReader(clientStream);
-            StreamWriter writer=new StreamWriter(clientStream);
-            String clientData;
-            ascult = true;
             while (ascult)
             {
-                clientData=read.ReadLine();
+                string clientData =reader.ReadLine();
+                if (clientData == null) break;
+                if(clientData == "true")
+                {
+                    MethodInvoker m = new MethodInvoker(() => board.UpdatePieceImage());
+                    this.Invoke(m);
+                }
+
+                int number;
+                if(int.TryParse(clientData,out number))
+                {
+                    Point O_OldPiecePos=default;
+                    Point O_NewPiecePos=default;
+                    O_NewPiecePos.Y = number % 10;
+                    number = number / 10;
+                    O_NewPiecePos.X = number % 10;
+                    number /= 10;
+                    O_OldPiecePos.Y = number % 10;
+                    number /= 10;
+                    O_OldPiecePos.X = number % 10;
+                    board.UpdateOponnentPieceImage(O_OldPiecePos,O_NewPiecePos);
+                    
+                }
+
+                if (clientData == "CheckMate")
+                {
+                    ascult = false;
+                    Console.WriteLine("Game Over");
+                    reader.Close();
+                    writer.Close();
+                    clientStream.Close();
+                    t.Abort();
+                    client.Close();
+                }
                 Console.WriteLine("Data from server is :"+clientData);
             }
         }

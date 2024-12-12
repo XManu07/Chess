@@ -20,15 +20,28 @@ namespace ChessServer
         bool workThread;
         Colors playerColor = Colors.black;
 
+        Point oldPiecePos;
+        Point newPiecePos;
+
+        public Point GetOldPiecePos()
+        {
+            return oldPiecePos;
+        }
+        public Point GetNewPiecePos()
+        {
+            return newPiecePos;
+        }
+
         public FChessServer()
         {
             InitializeComponent();
-            server = new TcpListener(System.Net.IPAddress.Any, 3000);
+            server = new TcpListener(System.Net.IPAddress.Any, 3001);
             server.Start();
 
             Thread t = new Thread(new ThreadStart(Server_Listener));
             workThread = true;
             t.Start();
+            
         }
 
         public void Server_Listener()
@@ -49,20 +62,23 @@ namespace ChessServer
             using (StreamWriter writer = new StreamWriter(streamServer))
             {
                 writer.AutoFlush = true;
-                writer.WriteLine(playerColor+"\n");
+                writer.WriteLine(playerColor);
                 switchPlayerColor();
-                int i = 1;
                 while (workThread)
                 {
                     try
                     {
-                        string serverData = await reader.ReadLineAsync();
-                        if (serverData == null) break;
+                        string data = await reader.ReadLineAsync();
+                        if (data == null) break;
 
-                        Console.WriteLine("Received from client " + serverData + " " + i++);
+                        Console.WriteLine("Received from client:"+data);
 
-                        await writer.WriteLineAsync("Server: " + serverData);
-
+                        int number;
+                        if (int.TryParse(data, out number))
+                        {
+                            SetPiecePosition(number);
+                            //writer.WriteLine("true");
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -75,13 +91,23 @@ namespace ChessServer
             client.Close();
         }
 
+        private void SetPiecePosition(int number)
+        {
+            newPiecePos.Y = number%10;
+            number = number / 10;
+            newPiecePos.X=number%10;
+            number /= 10;
+            oldPiecePos.Y = number%10;
+            number /= 10;
+            oldPiecePos.X = number%10;
+
+        }
         private void switchPlayerColor()
         {
             if (playerColor==Colors.black)
                 playerColor=Colors.white;
             else playerColor=Colors.black;
         }
-
         private void btnExit_Click(object sender, EventArgs e)
         {
             Application.Exit();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -19,6 +20,10 @@ namespace Chess
         Point newPiecePosition;
 
         PictureBox selectedImage;
+        Panel destination;
+
+        public StreamWriter writer;
+        public StreamReader reader;
 
         public Colors playerColor;
         public Board(TableLayoutPanel chessBoard,Colors playerCol)
@@ -32,6 +37,8 @@ namespace Chess
         {
             this.playerColor = playerColor;
         }
+
+        #region Init Board
         public void InitBoardBackground()
         {
             for (int row = 0; row < 8; row++)
@@ -97,7 +104,7 @@ namespace Chess
             }
 
         }
-
+        #endregion
         public void PictureBox_Click(object sender,EventArgs e)
         {
             selectedImage = sender as PictureBox;
@@ -108,22 +115,25 @@ namespace Chess
         }
         public void Panel_Click(object sender,EventArgs e)
         {
-            Panel destination = sender as Panel;
+            destination = sender as Panel;
             newPiecePosition.X = chessBoard.GetCellPosition(destination).Row;
             newPiecePosition.Y = chessBoard.GetCellPosition(destination).Column;
             Console.WriteLine("Click on Panel at pos " + chessBoard.GetCellPosition(destination));
-
-            //wait for server response if the move is a good one or not. if true:
-            if (true &&selectedImage!=null) // and if selectedImage != null (or old position!=null)
+            
+            if(oldPiecePosition!=default)
             {
-                if (PanelHasImage(destination))
-                {
-                    destination.Controls.RemoveAt(0);
-                }
-                destination.Controls.Add(selectedImage);
+                writer.WriteLine(oldPiecePosition.X.ToString()+oldPiecePosition.Y.ToString()+
+                    newPiecePosition.X.ToString()+newPiecePosition.Y.ToString());
             }
-            selectedImage = null;
-            Console.WriteLine(oldPiecePosition.ToString()+ " "+ newPiecePosition.ToString());
+            oldPiecePosition = default;
+        }
+        public void UpdatePieceImage()
+        {
+            if (PanelHasImage(destination))
+            {
+                destination.Controls.RemoveAt(0);
+            }
+            destination.Controls.Add(selectedImage);
         }
         private bool PanelHasImage(Panel destination)
         {
@@ -133,6 +143,14 @@ namespace Chess
             }
             return false;
         }
+        internal void UpdateOponnentPieceImage(Point O_OldPiecePos, Point O_NewPiecePos)
+        {
+            Panel parent =(Panel)chessBoard.GetControlFromPosition(O_OldPiecePos.X,O_OldPiecePos.Y);
+            PictureBox OImage = (PictureBox)parent.GetNextControl(parent, forward:true) ;
+            parent.Controls.RemoveAt(0);
 
+            Panel ODestination= (Panel)chessBoard.GetControlFromPosition(O_NewPiecePos.X, O_NewPiecePos.Y);
+            ODestination.Controls.Add(OImage);
+        }
     }
 }

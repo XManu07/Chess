@@ -18,15 +18,17 @@ namespace Chess
     {
         private Player player1;
         private Player player2;
+
         private Player currentPlayer;
         private Player opponentPlayer;
 
         BoardMatrix boardMatrix;
-        private Piece pieceToRemove;
 
+        private Piece pieceToRemove;
         private Piece pieceFromImage;
 
         Point currentKingPosition;
+
         public GameLogic()
         {
             InitPlayers();
@@ -43,7 +45,6 @@ namespace Chess
         }
         public void PieceChangePos(object sender)
         {
-
             if (pieceFromImage != null &&
                 pieceFromImage.ValidMove(currentPlayer.GetNewPiecePos()))
             {
