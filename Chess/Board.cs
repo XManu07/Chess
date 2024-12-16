@@ -5,8 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Chess.FChessGame;
 
@@ -143,14 +141,17 @@ namespace Chess
             }
             return false;
         }
-        internal void UpdateOponnentPieceImage(Point O_OldPiecePos, Point O_NewPiecePos)
+        public void UpdateOponnentPieceImage(Point O_OldPiecePos, Point O_NewPiecePos)
         {
-            Panel parent =(Panel)chessBoard.GetControlFromPosition(O_OldPiecePos.X,O_OldPiecePos.Y);
-            PictureBox OImage = (PictureBox)parent.GetNextControl(parent, forward:true) ;
-            parent.Controls.RemoveAt(0);
+            Panel parent =(Panel)chessBoard.GetControlFromPosition(O_OldPiecePos.Y,O_OldPiecePos.X);
+            PictureBox OImage = (PictureBox)parent.Controls[0];
+            Console.WriteLine("parent "+chessBoard.GetPositionFromControl(parent).Row+" "+ chessBoard.GetPositionFromControl(parent).Column);
+            parent.Controls.Remove(OImage);
 
-            Panel ODestination= (Panel)chessBoard.GetControlFromPosition(O_NewPiecePos.X, O_NewPiecePos.Y);
+            Panel ODestination= (Panel)chessBoard.GetControlFromPosition(O_NewPiecePos.Y, O_NewPiecePos.X);
+            Console.WriteLine("dest "+chessBoard.GetPositionFromControl(ODestination).Row + " " + chessBoard.GetPositionFromControl(ODestination).Column);
             ODestination.Controls.Add(OImage);
+            OImage.Dock=DockStyle.Fill;
         }
     }
 }

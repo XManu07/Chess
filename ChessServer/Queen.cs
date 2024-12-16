@@ -18,7 +18,7 @@ namespace Chess
             SetPieceName(PieceNames.queen);
             SetPieceColor(color);
             SetPosition(position);
-            SetPieceImage();
+
         }
         public override bool ValidDestination(Point destination)
         {

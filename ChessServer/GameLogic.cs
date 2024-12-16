@@ -1,14 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Chess
 {
@@ -16,9 +7,6 @@ namespace Chess
     
     internal class GameLogic
     {
-        private Player player1;
-        private Player player2;
-
         private Player currentPlayer;
         private Player opponentPlayer;
 
@@ -29,21 +17,53 @@ namespace Chess
 
         Point currentKingPosition;
 
-        public GameLogic()
+        public GameLogic(Player player1, Player player2)
         {
-            InitPlayers();
+            currentPlayer= player1;
+            opponentPlayer= player2;
             Piece.matrix = new BoardMatrix(player1,player2);
-            boardMatrix=Piece.matrix;
+            boardMatrix = Piece.matrix;
+            GenerateValidMoves();
+            StartGame();
         }
 
-        public void InitPlayers()
+        private void GenerateValidMoves()
         {
-            player1=new Player(Colors.black);
-            currentPlayer = player1;
-            player2=new Player(Colors.white);
-            opponentPlayer = player2; 
+            currentPlayer.GeneratePiecesValidMoves();
+            opponentPlayer.GeneratePiecesValidMoves();
         }
-        public void PieceChangePos(object sender)
+
+        private void StartGame()
+        {
+            while (!CheckMate())
+            {
+                if(currentPlayer.Moved)
+                { 
+                    if (currentPlayer.VeryfiMove(opponentPlayer,boardMatrix))
+                    {
+                        currentPlayer.WriteGoodMove();
+                        string move = currentPlayer.GetOldPiecePos().X.ToString() + currentPlayer.GetOldPiecePos().Y.ToString() +
+                            currentPlayer.GetNewPiecePos().X.ToString() + currentPlayer.GetNewPiecePos().Y.ToString();
+                        opponentPlayer.WriteCurrentMove(move);
+
+                        currentPlayer.Moved= false;
+                        SwitchPlayer();
+                        GenerateValidMoves();
+                    }
+                }
+            }
+        }
+
+        private bool CheckMate()
+        {
+            if (currentPlayer.HasValidMoves())
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public void PieceChangePos()
         {
             if (pieceFromImage != null &&
                 pieceFromImage.ValidMove(currentPlayer.GetNewPiecePos()))
@@ -68,51 +88,30 @@ namespace Chess
         {
             boardMatrix.MUpdateOldPos(pieceFromImage.GetPiecePosition());
             pieceFromImage.SetPosition(currentPlayer.GetNewPiecePos());
-            boardMatrix.MInitPieces(player1, player2);
+            boardMatrix.MInitPieces(currentPlayer, opponentPlayer);
             boardMatrix.MShow();
         }
         public Piece GetPieceToRemove(Player currentPlayer)
         {
             Piece pieceToRemove;
-            if (currentPlayer == player1)
+            foreach(var piece in opponentPlayer.GetPieces())
             {
-                foreach(var piece in player2.GetPieces())
+                if (piece.GetPiecePosition()==currentPlayer.GetNewPiecePos())
                 {
-                    if (piece.GetPiecePosition()==currentPlayer.GetNewPiecePos())
-                    {
-                        pieceToRemove = piece;
-                        return pieceToRemove;
-                    }
+                    pieceToRemove = piece;
+                    return pieceToRemove;
                 }
             }
+            
 
-
-            if (currentPlayer == player2)
-            {
-                foreach (var piece in player1.GetPieces())
-                {
-                    if (piece.GetPiecePosition() == currentPlayer.GetNewPiecePos())
-                    {
-                        pieceToRemove = piece;
-                        return pieceToRemove;
-                    }
-                }
-            }
             return null;
         }
 
         public void SwitchPlayer()
-        {           
-            if(currentPlayer == player1) 
-            {
-                currentPlayer = player2;
-                opponentPlayer = player1;
-            }
-            else
-            {
-                currentPlayer = player1;
-                opponentPlayer = player2;
-            }
+        {
+            Player temp = currentPlayer;
+            currentPlayer = opponentPlayer;
+            opponentPlayer = temp;
         }
 
     }

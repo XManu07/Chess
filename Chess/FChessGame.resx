@@ -157,7 +157,7 @@
     <value>8</value>
   </data>
   <data name="chessBoard.Size" type="System.Drawing.Size, System.Drawing">
-    <value>806, 704</value>
+    <value>991, 826</value>
   </data>
   <data name="chessBoard.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>

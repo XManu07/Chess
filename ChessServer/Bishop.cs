@@ -19,7 +19,6 @@ namespace Chess
             SetPieceName(PieceNames.bishop);
             SetPieceColor(color);
             SetPosition(position);
-            SetPieceImage();
         }
         public override bool ValidDestination (Point destination)
         {

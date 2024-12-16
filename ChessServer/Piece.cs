@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Drawing;
-using System.Reflection;
-using System.Resources;
-using System.Security.Policy;
-using System.Windows.Forms;
 
 namespace Chess
 {
@@ -15,11 +11,14 @@ namespace Chess
         private PieceNames pieceName;
         private Colors pieceColor;
         private Point piecePosition;
-        private PictureBox pieceImage;
-        private List<Point> validMoves;
+
+        private List<Point> LValidMoves;
         public static BoardMatrix matrix;
         
-
+        public Piece()
+        {
+            LValidMoves = new List<Point>();
+        }
         #region Set,Get
         public void SetPieceName(PieceNames name)
         {
@@ -51,41 +50,26 @@ namespace Chess
         {
             return piecePosition;
         }
-        #endregion
-         
-        #region Set,Get PieceImage
-        public void SetPieceImage()
-        {
-            string nameOfImage = pieceName.ToString()+"_"+pieceColor.ToString();
 
-            ResourceManager rm = new ResourceManager("Chess.Properties.Resources", Assembly.GetExecutingAssembly());
-            Image PieceImage = (Image)rm.GetObject(nameOfImage);
-            pieceImage = new PictureBox();
-            pieceImage.Image = PieceImage;
-            pieceImage.SizeMode = PictureBoxSizeMode.StretchImage;
-            pieceImage.Dock = DockStyle.Fill;
-            pieceImage.BackColor = Color.Transparent;
-        }
-        public PictureBox GetPieceImage()
+        public List<Point> GetLValidMoves()
         {
-            return pieceImage;
+            return LValidMoves;
         }
         #endregion
 
         internal abstract bool ValidMove(Point destination);
-        public virtual bool GenerateValidMoves(int[,] allPiecess)
+        public virtual void GenerateValidMoves()
         {
             for(int i = 0; i < 8; i++)
             {
                 for(int j=0; j < 8; j++)
                 {
-                    if (allPiecess[i,j] == 0)
+                    if (ValidMove(new Point(i, j)))
                     {
-
+                        LValidMoves.Add(new Point(i, j));
                     }
                 }
             }
-            return true;
         }
 
         public virtual bool KingPosIsValidMove(Point kingPos)

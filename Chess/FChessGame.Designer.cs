@@ -54,7 +54,6 @@
             this.Controls.Add(this.chessBoard);
             this.Controls.Add(this.btnExitGame);
             this.Name = "FChessGame";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.FChessGame_Load);
             this.Resize += new System.EventHandler(this.FChessGame_Resize);
             this.ResumeLayout(false);

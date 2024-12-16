@@ -104,8 +104,8 @@ namespace Chess
                     O_OldPiecePos.Y = number % 10;
                     number /= 10;
                     O_OldPiecePos.X = number % 10;
-                    board.UpdateOponnentPieceImage(O_OldPiecePos,O_NewPiecePos);
-                    
+                    MethodInvoker m = new MethodInvoker(() => board.UpdateOponnentPieceImage(O_OldPiecePos, O_NewPiecePos));  
+                    this.Invoke(m);
                 }
 
                 if (clientData == "CheckMate")
