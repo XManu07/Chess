@@ -21,8 +21,6 @@ namespace Chess
         public StreamWriter writer;
         public StreamReader reader;
 
-        public bool move;
-
         public FChessGame()
         {
             InitializeComponent();
@@ -33,19 +31,28 @@ namespace Chess
             writer= new StreamWriter(clientStream);
             writer.AutoFlush = true;
             reader = new StreamReader(clientStream);
-            board = new Board(chessBoard,GetPlayerColor());
-            board.writer=writer;
-            board.reader=reader;
+
+            Colors playerColor=GetPlayerColor();
+            board = new Board(chessBoard,playerColor);
+            board.Writer=writer;
 
             t = new Thread(new ThreadStart(ClientListener));
             t.Start();
 
+            AdjustChessBoardSize();
 
+            SetPbPlayerColor(playerColor);
+        }
+
+        private void SetPbPlayerColor(Colors playerColor)
+        {
+            if (playerColor == Colors.white)
+                pbPlayerColor.BackColor = Color.Gold;
+            else pbPlayerColor.BackColor = Color.Black;
         }
 
         public Colors GetPlayerColor()
         {
-            reader = new StreamReader(clientStream);
             string color=reader.ReadLine();
             Console.WriteLine("color from server is :" + color);
             if (color == "black")
@@ -54,7 +61,6 @@ namespace Chess
             }
             else
             {
-                move = true;
                 return Colors.white;
             }
         }
@@ -62,10 +68,6 @@ namespace Chess
         private void btnExitGame_Click(object sender, EventArgs e)
         {
             System.Windows.Forms.Application.Exit();
-        }
-        private void FChessGame_Load(object sender, EventArgs e)
-        {
-
         }
 
         #region resize
@@ -80,46 +82,65 @@ namespace Chess
         }
         #endregion
 
+        #region Listener
         private void ClientListener()
         {
             while (ascult)
             {
                 string clientData =reader.ReadLine();
+
                 if (clientData == null) break;
+
                 if(clientData == "true")
                 {
-                    MethodInvoker m = new MethodInvoker(() => board.UpdatePieceImage());
-                    this.Invoke(m);
+                    HandleCaseTrue();
                 }
 
-                int number;
-                if(int.TryParse(clientData,out number))
+                if(int.TryParse(clientData,out int number))
                 {
-                    Point O_OldPiecePos=default;
-                    Point O_NewPiecePos=default;
-                    O_NewPiecePos.Y = number % 10;
-                    number = number / 10;
-                    O_NewPiecePos.X = number % 10;
-                    number /= 10;
-                    O_OldPiecePos.Y = number % 10;
-                    number /= 10;
-                    O_OldPiecePos.X = number % 10;
-                    MethodInvoker m = new MethodInvoker(() => board.UpdateOponnentPieceImage(O_OldPiecePos, O_NewPiecePos));  
-                    this.Invoke(m);
+                    HandleCaseNumber(number);
                 }
 
                 if (clientData == "CheckMate")
                 {
-                    ascult = false;
-                    Console.WriteLine("Game Over");
-                    reader.Close();
-                    writer.Close();
-                    clientStream.Close();
-                    t.Abort();
-                    client.Close();
+                    HandleCheckMate();
                 }
+
                 Console.WriteLine("Data from server is :"+clientData);
             }
         }
+
+        public void HandleCaseTrue()
+        {
+            MethodInvoker m = new MethodInvoker(() => board.UpdatePieceImage());
+            this.Invoke(m);
+        }
+
+        public void HandleCaseNumber(int number)
+        {
+            Point O_OldPiecePos = default;
+            Point O_NewPiecePos = default;
+            O_NewPiecePos.Y = number % 10;
+            number = number / 10;
+            O_NewPiecePos.X = number % 10;
+            number /= 10;
+            O_OldPiecePos.Y = number % 10;
+            number /= 10;
+            O_OldPiecePos.X = number % 10;
+            MethodInvoker m = new MethodInvoker(() => board.UpdateOponnentImage(O_OldPiecePos, O_NewPiecePos));
+            this.Invoke(m);
+        }
+
+        public void HandleCheckMate()
+        {
+            ascult = false;
+            Console.WriteLine("Game Over");
+            reader.Close();
+            writer.Close();
+            clientStream.Close();
+            t.Abort();
+            client.Close();
+        }
+        #endregion
     }
 }

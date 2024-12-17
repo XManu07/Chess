@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnExitGame.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 899</value>
+    <value>12, 710</value>
   </data>
   <data name="btnExitGame.Size" type="System.Drawing.Size, System.Drawing">
     <value>161, 56</value>
@@ -145,19 +145,19 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnExitGame.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="chessBoard.ColumnCount" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
   <data name="chessBoard.Location" type="System.Drawing.Point, System.Drawing">
-    <value>49, 41</value>
+    <value>194, 46</value>
   </data>
   <data name="chessBoard.RowCount" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
   <data name="chessBoard.Size" type="System.Drawing.Size, System.Drawing">
-    <value>991, 826</value>
+    <value>771, 652</value>
   </data>
   <data name="chessBoard.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -172,10 +172,34 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;chessBoard.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="chessBoard.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls /&gt;&lt;Columns Styles="Percent,12.5,Percent,12.5,Percent,12.5,Percent,12.5,Percent,12.5,Percent,12.5,Percent,12.5,Percent,12.5" /&gt;&lt;Rows Styles="Percent,12.5,Percent,12.5,Percent,12.5,Percent,12.5,Percent,12.5,Percent,12.5,Percent,12.5,Percent,12.5" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="pbPlayerColor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="pbPlayerColor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 668</value>
+  </data>
+  <data name="pbPlayerColor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>40, 40</value>
+  </data>
+  <data name="pbPlayerColor.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;pbPlayerColor.Name" xml:space="preserve">
+    <value>pbPlayerColor</value>
+  </data>
+  <data name="&gt;&gt;pbPlayerColor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pbPlayerColor.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;pbPlayerColor.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -184,7 +208,7 @@
     <value>9, 20</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1128, 967</value>
+    <value>977, 778</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>

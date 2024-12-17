@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Windows.Forms;
@@ -14,22 +12,25 @@ namespace Chess
     {
         TableLayoutPanel chessBoard;
 
-        Point oldPiecePosition;
-        Point newPiecePosition;
-
         PictureBox selectedImage;
         Panel destination;
 
-        public StreamWriter writer;
-        public StreamReader reader;
+        Point oldPiecePosition;
+        Point newPiecePosition;
+        Point outFromBoard;
 
-        public Colors playerColor;
+        StreamWriter writer;
+
+        Colors playerColor;
+
+        public StreamWriter Writer { get => writer; set => writer = value; }
         public Board(TableLayoutPanel chessBoard,Colors playerCol)
         {
             this.chessBoard = chessBoard;
             SetPlayerColor(playerCol);
             InitBoardBackground();
             InitPieceImages();
+            outFromBoard = new Point(-1, -1);
         }
         public void SetPlayerColor(Colors playerColor)
         {
@@ -109,31 +110,34 @@ namespace Chess
             Panel imageParent=selectedImage.Parent as Panel;
             oldPiecePosition.X = chessBoard.GetCellPosition(imageParent).Row;
             oldPiecePosition.Y = chessBoard.GetCellPosition(imageParent).Column;
-            Console.WriteLine("Click on PictureBox at pos " + chessBoard.GetCellPosition(imageParent));
         }
         public void Panel_Click(object sender,EventArgs e)
         {
             destination = sender as Panel;
             newPiecePosition.X = chessBoard.GetCellPosition(destination).Row;
             newPiecePosition.Y = chessBoard.GetCellPosition(destination).Column;
-            Console.WriteLine("Click on Panel at pos " + chessBoard.GetCellPosition(destination));
             
-            if(oldPiecePosition!=default)
+            if(oldPiecePosition!=outFromBoard)
             {
-                writer.WriteLine(oldPiecePosition.X.ToString()+oldPiecePosition.Y.ToString()+
-                    newPiecePosition.X.ToString()+newPiecePosition.Y.ToString());
+                writer.WriteLine(PositionToString());
             }
-            oldPiecePosition = default;
+            oldPiecePosition = outFromBoard;
+        }
+        public string PositionToString()
+        {
+            // old position + new position
+            return oldPiecePosition.X.ToString() + oldPiecePosition.Y.ToString() +
+                    newPiecePosition.X.ToString() + newPiecePosition.Y.ToString();
         }
         public void UpdatePieceImage()
         {
-            if (PanelHasImage(destination))
+            if (PanelHasPictureBox(destination))
             {
                 destination.Controls.RemoveAt(0);
             }
             destination.Controls.Add(selectedImage);
         }
-        private bool PanelHasImage(Panel destination)
+        private bool PanelHasPictureBox(Panel destination)
         {
             if (destination.HasChildren == true)
             {
@@ -141,17 +145,18 @@ namespace Chess
             }
             return false;
         }
-        public void UpdateOponnentPieceImage(Point O_OldPiecePos, Point O_NewPiecePos)
+        public void UpdateOponnentImage(Point O_OldPiecePos, Point O_NewPiecePos)
         {
             Panel parent =(Panel)chessBoard.GetControlFromPosition(O_OldPiecePos.Y,O_OldPiecePos.X);
             PictureBox OImage = (PictureBox)parent.Controls[0];
-            Console.WriteLine("parent "+chessBoard.GetPositionFromControl(parent).Row+" "+ chessBoard.GetPositionFromControl(parent).Column);
             parent.Controls.Remove(OImage);
 
             Panel ODestination= (Panel)chessBoard.GetControlFromPosition(O_NewPiecePos.Y, O_NewPiecePos.X);
-            Console.WriteLine("dest "+chessBoard.GetPositionFromControl(ODestination).Row + " " + chessBoard.GetPositionFromControl(ODestination).Column);
+            if (PanelHasPictureBox(ODestination))
+            {
+                ODestination.Controls.RemoveAt(0);
+            }
             ODestination.Controls.Add(OImage);
-            OImage.Dock=DockStyle.Fill;
         }
     }
 }
