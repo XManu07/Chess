@@ -26,7 +26,7 @@ namespace Chess
         public FChessGame()
         {
             InitializeComponent();
-            client = new TcpClient("192.168.158.87", 3000); //modify with server ipadress
+            client = new TcpClient("127.0.0.1", 3000); //modify with server ipadress
             ascult = true;
 
             clientStream = client.GetStream();
