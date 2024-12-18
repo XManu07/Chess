@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnExitGame.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 710</value>
+    <value>12, 704</value>
   </data>
   <data name="btnExitGame.Size" type="System.Drawing.Size, System.Drawing">
     <value>161, 56</value>
@@ -181,7 +181,7 @@
     <value>Bottom, Left</value>
   </data>
   <data name="pbPlayerColor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 668</value>
+    <value>12, 658</value>
   </data>
   <data name="pbPlayerColor.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>

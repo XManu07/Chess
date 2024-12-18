@@ -1,15 +1,8 @@
 ﻿using Chess;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
+using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ChessServer
@@ -25,7 +18,7 @@ namespace ChessServer
         public FChessServer()
         {
             InitializeComponent();
-            server = new TcpListener(System.Net.IPAddress.Any, 3001);
+            server = new TcpListener(IPAddress.Any, 3000);
             server.Start();
 
             playerNumber = 0;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Windows.Forms;
@@ -11,20 +12,21 @@ namespace Chess
 
     {
         public enum Colors { white = 1, black = -1 };
-        Board board;
 
-        public TcpClient client;
-        public bool ascult;
-        public Thread t;
+        private Board board;
 
-        public NetworkStream clientStream;
-        public StreamWriter writer;
-        public StreamReader reader;
+        private TcpClient client;
+        private bool ascult;
+        private Thread t;
+
+        private NetworkStream clientStream;
+        private StreamWriter writer;
+        private StreamReader reader;
 
         public FChessGame()
         {
             InitializeComponent();
-            client = new TcpClient("127.0.0.1", 3001);
+            client = new TcpClient("192.168.158.87", 3000); //modify with server ipadress
             ascult = true;
 
             clientStream = client.GetStream();
