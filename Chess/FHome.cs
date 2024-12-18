@@ -15,9 +15,7 @@ namespace Chess
         FChessGame chessGame;
         public FHome()
         {
-            InitializeComponent();
-            //this code is from start button
-            chessGame=new FChessGame();
+            InitializeComponent();chessGame=new FChessGame();
             chessGame.ShowDialog();
         }
 
@@ -26,6 +24,5 @@ namespace Chess
             
         }
 
- 
     }
 }

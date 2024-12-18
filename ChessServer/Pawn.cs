@@ -21,7 +21,6 @@ namespace Chess
             SetPieceName(PieceNames.pawn);
             SetPieceColor(color);
             SetPosition(position);
-            SetPieceImage();
         }
 
         public override bool ValidDestination(Point destination)
