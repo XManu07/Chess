@@ -16,11 +16,13 @@ namespace Chess
         {
             foreach (var piece in p1.GetPieces())
             {
+                if (piece.GetPiecePosition().X == -1) continue;
                 allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)piece.GetPieceName()*(int)piece.GetPieceColor();   
             }
 
             foreach (var piece in p2.GetPieces())
             {
+                if (piece.GetPiecePosition().X == -1) continue;
                 allPieces[piece.GetPiecePosition().X, piece.GetPiecePosition().Y] = (int)piece.GetPieceName() * (int)piece.GetPieceColor();
             }
         }

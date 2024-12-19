@@ -21,6 +21,9 @@ namespace Chess
         }
         public override bool ValidDestination(Point destination)
         {
+            /*
+             * if it's on the same column or row it's a valid destination
+             */
             if (this.GetPiecePosition().X == destination.X || this.GetPiecePosition().Y == destination.Y)
                 return true;
             return false;
@@ -57,7 +60,6 @@ namespace Chess
             return true;
         }
 
-
         internal override bool ValidMove(Point destination)
         {
             if (ValidDestination(destination))
@@ -65,7 +67,8 @@ namespace Chess
                 if (PieceToDestinationIsEmpty(destination)&&matrix.MSquareIsEmpty(destination))
                     return true;
                 if (PieceToDestinationIsEmpty(destination))
-                    if (matrix.MSquareIsOppositePiece(destination, GetPieceColor())&&!matrix.MSquareIsOppositeKing(destination,GetPieceColor()))
+                    if (matrix.MSquareIsOppositePiece(destination, GetPieceColor())&&
+                        !matrix.MSquareIsOppositeKing(destination,GetPieceColor()))
                         return true;
             }
             return false;
