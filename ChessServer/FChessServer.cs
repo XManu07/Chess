@@ -18,7 +18,7 @@ namespace ChessServer
         public FChessServer()
         {
             InitializeComponent();
-            server = new TcpListener(IPAddress.Any, 3000);
+            server = new TcpListener(IPAddress.Any, 3001);
             server.Start();
 
             playerNumber = 0;

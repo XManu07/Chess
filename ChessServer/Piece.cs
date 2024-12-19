@@ -84,10 +84,14 @@ namespace Chess
         public abstract bool ValidDestination(Point destination);
         public abstract bool PieceToDestinationIsEmpty(Point destination);
 
-        public override string ToString()
+        public string ListMovesToString()
         {
-            return "[Piece=" + pieceName + ",color=" + pieceColor + ",position="
-                + piecePosition.X + "," + piecePosition.Y + "]";
+            string data=null;
+            foreach(Point move in LValidMoves)
+            {
+                data=data+move.X.ToString()+ move.Y.ToString();
+            }
+            return data;
         }
 
     }

@@ -11,7 +11,12 @@ namespace Chess
         private Player opponentPlayer;
 
         BoardMatrix boardMatrix;
+
         int[,] oldMatrix;
+        Point oldPosition;
+
+        public Point OldPosition { get => oldPosition; set => oldPosition = value; }
+
         public GameLogic(Player player1, Player player2)
         {
             currentPlayer= player1;
@@ -19,7 +24,7 @@ namespace Chess
 
             Piece.matrix = new BoardMatrix(player1,player2);
             boardMatrix = Piece.matrix;
-            int[,] initialMatrix = new int[8, 8];
+            oldMatrix = new int[8, 8];
 
             GenerateValidMoves();
             StartGame();
@@ -46,10 +51,17 @@ namespace Chess
 
                         currentPlayer.Moved = false;
                         SwitchPlayer();
+                        ClearLValidMoves();
                         GenerateValidMoves();
                     }
                 }
             }
+        }
+
+        private void ClearLValidMoves()
+        {
+            currentPlayer.ClearLValidMoves();
+            opponentPlayer.ClearLValidMoves();
         }
 
         public bool VeryfiMove()
@@ -76,12 +88,10 @@ namespace Chess
             }
             return false;
         }
-
         public bool Check(Point kingPos, Piece pieceFromImage)
         {
             CopyBoardMatrix();
-            
-            Point oldPosition = pieceFromImage.GetPiecePosition();
+            OldPosition = pieceFromImage.GetPiecePosition();
 
             int check = 0;
             pieceFromImage.SetPosition(currentPlayer.NewPiecePosition);
@@ -107,18 +117,10 @@ namespace Chess
                     check = 1;
             }
 
-
-            pieceFromImage.SetPosition(oldPosition);
-            for (int i = 0; i < 8; i++)
-            {
-                for (int j = 0; j < 8; j++)
-                {
-                    boardMatrix.allPieces[i, j] = oldMatrix[i, j];
-                }
-            }
-
+            pieceFromImage.SetPosition(OldPosition);
+            CopyOldMatrix();
+           
             return check == 1 ? true : false;
-
         }
         public void CopyBoardMatrix()
         {
@@ -129,6 +131,17 @@ namespace Chess
                     oldMatrix[i, j] = boardMatrix.allPieces[i, j];
                 }
             }
+        }
+        public void CopyOldMatrix()
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    boardMatrix.allPieces[i, j] = oldMatrix[i, j];
+                }
+            }
+
         }
         private bool CheckMate()
         {

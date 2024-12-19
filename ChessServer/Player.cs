@@ -7,11 +7,10 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
+using System.Xml.Serialization;
+
 
 namespace Chess
 {
@@ -97,6 +96,10 @@ namespace Chess
                         Console.WriteLine("Received from client:" + data);
 
                         int number;
+                        if (data[0] == 'p')
+                        {
+                            HandleSendValidMoveList(data);
+                        }
                         if (int.TryParse(data, out number))
                         {
                             SetPiecePosition(number);
@@ -113,6 +116,23 @@ namespace Chess
             Console.WriteLine("Client disconnected...");
             tcpClient.Close();
         }
+
+        private void HandleSendValidMoveList(string data)
+        {
+            int position;
+            int y;
+            if (int.TryParse(data.Substring(1),out position))
+            {
+                y = position % 10;
+                oldPiecePosition.Y = y;
+                position/=10;
+
+                oldPiecePosition.X = position;
+            }
+            Piece currentPiece = GetPieceFromPos(oldPiecePosition);
+            writer.WriteLine("m" + currentPiece.ListMovesToString()); //m from moves
+        }
+
         private void SetPiecePosition(int number)
         {
             int y = number % 10;
@@ -194,6 +214,12 @@ namespace Chess
         internal void WriteCurrentMove(string move)
         {
             writer.WriteLine(move);
+        }
+
+        internal void ClearLValidMoves()
+        {
+            foreach (var piece in pieces)
+                piece.GetLValidMoves().Clear();
         }
     }
 }

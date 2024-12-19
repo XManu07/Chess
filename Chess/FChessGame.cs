@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Chess
 {
@@ -26,7 +27,7 @@ namespace Chess
         public FChessGame()
         {
             InitializeComponent();
-            client = new TcpClient("127.0.0.1", 3000); //modify with server ipadress
+            client = new TcpClient("127.0.0.1", 3001); //to be modified with server ipadress
             ascult = true;
 
             clientStream = client.GetStream();
@@ -52,7 +53,6 @@ namespace Chess
                 pbPlayerColor.BackColor = Color.Gold;
             else pbPlayerColor.BackColor = Color.Black;
         }
-
         public Colors GetPlayerColor()
         {
             string color=reader.ReadLine();
@@ -108,13 +108,33 @@ namespace Chess
                     HandleCheckMate();
                 }
 
+                if (clientData[0] == 'm')//m from move
+                {
+                    string points = clientData.Substring(1);
+                    HandlePoints(points);
+                }
+
                 Console.WriteLine("Data from server is :"+clientData);
             }
         }
 
+
+
+        private void HandlePoints(string points)
+        {
+            for(int plen=points.Length-1; plen>0; plen-=2) 
+            {
+                int y = points[plen]-48;
+                int x = points[plen-1]-48;
+                board.LValidMoves.Add(new Point(x, y));
+            }
+            MethodInvoker m = new MethodInvoker(() => board.ShowGreenCircles());
+            Invoke(m);
+        }
+
         public void HandleCaseTrue()
         {
-            MethodInvoker m = new MethodInvoker(() => board.UpdatePieceImage());
+            MethodInvoker m = new MethodInvoker(() => { board.DeleteGreenCircles();board.LValidMoves.Clear(); board.UpdatePieceImage(); }) ;
             this.Invoke(m);
         }
 

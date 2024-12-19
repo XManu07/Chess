@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -19,11 +21,15 @@ namespace Chess
         Point newPiecePosition;
         Point outFromBoard;
 
+        List<Point> lValidMoves = new List<Point>();
+
         StreamWriter writer;
 
         Colors playerColor;
 
         public StreamWriter Writer { get => writer; set => writer = value; }
+        public List<Point> LValidMoves { get => lValidMoves; set => lValidMoves = value; }
+
         public Board(TableLayoutPanel chessBoard,Colors playerCol)
         {
             this.chessBoard = chessBoard;
@@ -103,6 +109,7 @@ namespace Chess
             }
 
         }
+        
         #endregion
         public void PictureBox_Click(object sender,EventArgs e)
         {
@@ -110,6 +117,14 @@ namespace Chess
             Panel imageParent=selectedImage.Parent as Panel;
             oldPiecePosition.X = chessBoard.GetCellPosition(imageParent).Row;
             oldPiecePosition.Y = chessBoard.GetCellPosition(imageParent).Column;
+
+            if (LValidMoves != null)
+            {
+                DeleteGreenCircles();
+                LValidMoves.Clear();
+            }
+            writer.WriteLine("p" + oldPiecePosition.X + oldPiecePosition.Y);
+
         }
         public void Panel_Click(object sender,EventArgs e)
         {
@@ -157,6 +172,24 @@ namespace Chess
                 ODestination.Controls.RemoveAt(0);
             }
             ODestination.Controls.Add(OImage);
+        }
+        public void DeleteGreenCircles() 
+        {
+            foreach (Point point in LValidMoves)
+            {
+                Panel ODestination = (Panel)chessBoard.GetControlFromPosition(point.Y, point.X);
+                ODestination.Controls.RemoveAt(0);
+            }
+        }
+        public void ShowGreenCircles()
+        {
+            foreach (Point point in LValidMoves)
+            {
+                GreenCircle greenCircle = new GreenCircle();
+                Panel ODestination = (Panel)chessBoard.GetControlFromPosition(point.Y, point.X);
+                ODestination.Controls.Add(greenCircle.Image);
+                greenCircle.Image.BringToFront();
+            }
         }
     }
 }
