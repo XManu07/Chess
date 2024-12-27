@@ -58,19 +58,6 @@ namespace Chess
         #endregion
 
         internal abstract bool ValidMove(Point destination);
-        public virtual void GenerateValidMoves()
-        {
-            for(int i = 0; i < 8; i++)
-            {
-                for(int j=0; j < 8; j++)
-                {
-                    if (ValidMove(new Point(i, j)))
-                    {
-                        LValidMoves.Add(new Point(i, j));
-                    }
-                }
-            }
-        }
 
         public virtual bool KingPosIsValidMove(Point kingPos)
         {
@@ -81,13 +68,18 @@ namespace Chess
             }
             return false;
         }
+
         public abstract bool ValidDestination(Point destination);
         public abstract bool PieceToDestinationIsEmpty(Point destination);
 
-        public override string ToString()
+        public string ListMovesToString()
         {
-            return "[Piece=" + pieceName + ",color=" + pieceColor + ",position="
-                + piecePosition.X + "," + piecePosition.Y + "]";
+            string data=null;
+            foreach(Point move in LValidMoves)
+            {
+                data=data+move.X.ToString()+ move.Y.ToString();
+            }
+            return data;
         }
 
     }

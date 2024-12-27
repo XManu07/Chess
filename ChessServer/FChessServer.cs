@@ -13,12 +13,13 @@ namespace ChessServer
         bool workThread;
 
         Player[] players = new Player[100]; 
-        int playerNumber;
+        public static int playerNumber;
         Colors playerColorOfPieces = Colors.white;
+
         public FChessServer()
         {
             InitializeComponent();
-            server = new TcpListener(IPAddress.Any, 3000);
+            server = new TcpListener(IPAddress.Any, 3001);
             server.Start();
 
             playerNumber = 0;
@@ -36,8 +37,7 @@ namespace ChessServer
                 TcpClient client = server.AcceptTcpClient();
                 Player player=new Player(playerColorOfPieces,client);
                 playerNumber++;
-                Console.WriteLine("Player number is: " + playerNumber);
-                Console.WriteLine("Player color is: " + playerColorOfPieces);
+
                 players[playerNumber] = player;
                 switchPlayerColor();
 

@@ -1,17 +1,11 @@
 ﻿using ChessServer;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.IO;
-using System.Linq;
 using System.Net.Sockets;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
+
 
 namespace Chess
 {
@@ -79,6 +73,8 @@ namespace Chess
             Console.WriteLine("Client connected ...");
             Task.Run(() => HandleClientAsync(tcpClient));
         }
+
+
         private async Task HandleClientAsync(TcpClient tcpClient)
         {
             using ( streamServer = tcpClient.GetStream())
@@ -94,14 +90,18 @@ namespace Chess
                         string data = await reader.ReadLineAsync();
                         if (data == null) break;
 
-                        Console.WriteLine("Received from client:" + data);
+                        if (data[0] == 'p')     //p from piece
+                        {
+                            HandleSendValidMoveList(data);
+                        }
 
                         int number;
                         if (int.TryParse(data, out number))
                         {
-                            SetPiecePosition(number);
-                            Moved = true;
+                            HandlePiecePosition(number);
                         }
+                        
+                        Console.WriteLine("Received from client:" + data);
                     }
                     catch (Exception ex)
                     {
@@ -110,10 +110,28 @@ namespace Chess
                     }
                 }
             }
+            FChessServer.playerNumber --;
             Console.WriteLine("Client disconnected...");
             tcpClient.Close();
         }
-        private void SetPiecePosition(int number)
+
+        private void HandleSendValidMoveList(string data)
+        {
+            int position;
+            int y;
+            if (int.TryParse(data.Substring(1),out position))
+            {
+                y = position % 10;
+                oldPiecePosition.Y = y;
+                position/=10;
+
+                oldPiecePosition.X = position;
+            }
+            Piece currentPiece = GetPieceFromPos(oldPiecePosition);
+            writer.WriteLine("m" + currentPiece.ListMovesToString()); //m from moves
+        }
+
+        private void HandlePiecePosition(int number)
         {
             int y = number % 10;
             number /= 10;
@@ -124,6 +142,8 @@ namespace Chess
             number /= 10;
             x=number % 10;
             OldPiecePosition = new Point(x, y);
+            
+            Moved = true;
         }
 
 
@@ -148,14 +168,6 @@ namespace Chess
             }
         }
 
-        public void GeneratePiecesValidMoves()
-        {
-            foreach (var piece in pieces)
-            {
-                piece.GenerateValidMoves();
-            }
-        }
-
         public bool HasValidMoves()
         {
             foreach (var piece in pieces)
@@ -164,11 +176,6 @@ namespace Chess
                     return true;
             }
             return false;
-        }
-
-        public void ShowPieces()
-        {
-            pieces.ForEach(p => { Console.WriteLine(p.ToString()); });
         }
         public void RemovePiece(Piece piece)
         {
@@ -191,9 +198,15 @@ namespace Chess
             Console.WriteLine("am scris");
         }
 
-        internal void WriteCurrentMove(string move)
+        internal void WriteCurrentPlayerMove(string move)
         {
             writer.WriteLine(move);
+        }
+
+        internal void ClearLValidMoves()
+        {
+            foreach (var piece in pieces)
+                piece.GetLValidMoves().Clear();
         }
     }
 }
