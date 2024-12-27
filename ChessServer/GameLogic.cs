@@ -1,6 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Runtime.InteropServices;
+﻿using System.Drawing;
 
 namespace Chess
 {
@@ -52,7 +50,7 @@ namespace Chess
         private void GenerateLValidMoves()
         {
             GeneratePlayerLValidMoves(currentPlayer);
-            GeneratePlayerLValidMoves(opponentPlayer);
+            //GeneratePlayerLValidMoves(opponentPlayer);
         }
         public void GeneratePlayerLValidMoves(Player player)
         {
@@ -63,7 +61,7 @@ namespace Chess
                     for (int j = 0; j < 8; j++)
                     {
                         Point newPos = new Point(i, j);
-                        if(VeryfiMove(player,piece,newPos))//dest invalid
+                        if(GoodMove(player,piece,newPos))
                         {
                             piece.GetLValidMoves().Add(new Point(i, j));
                         }
@@ -77,38 +75,119 @@ namespace Chess
             opponentPlayer.ClearLValidMoves();
         }
         #endregion 
-        private bool VeryfiMove(Player player, Piece piece, Point newPos)
+        private bool GoodMove(Player player, Piece piece, Point newPos)
         {
             if (piece.ValidMove(newPos))
             {
-                if (Check(player.GetKingPoint(), piece,player,GetOpponentPlayer(player)))
+                if (Check(player, piece,newPos,GetOpponentPlayer(player)))
                     return false;
                 return true;
             }
             return false;
         }
-
-        private Player GetOpponentPlayer(Player player)
+        public bool Check(Player currentPlayer,Piece piece,Point destination,Player opponentPlayer)
         {
-            if (player == currentPlayer)
-                return opponentPlayer;
-            return currentPlayer;
-        }
+            SavePiecePos(piece);
+            SaveCurrentBoardMatrix();
 
+            if (DestIsOppositePiece(destination,currentPlayer))
+            {
+                Piece opponentPieceFromDestination = GetOpponentPieceFromDestination(destination,opponentPlayer);
+                ErasePieceFromMatrix(destination);
+                SetPiecePosOutOfBoard(opponentPieceFromDestination);
+            }
+
+            UpdatePiecePos(piece,destination);
+            UpdateMatrix(piece, destination);
+
+            foreach(Piece opponentPiece in opponentPlayer.GetPieces())
+            {
+                if (opponentPiece.KingPosIsValidMove(currentPlayer.GetKingPoint()))
+                {
+                    RestauratePiecePos(piece,opponentPlayer,destination);
+                    RestaurateBoardMatrix();
+                    return true;
+                }
+            }
+
+            RestauratePiecePos(piece,opponentPlayer,destination);
+            RestaurateBoardMatrix();
+            return false;
+        }
+        private void UpdateMatrix(Piece piece, Point destination)
+        {
+            boardMatrix.allPieces[destination.X, destination.Y] = (int)piece.GetPieceColor() * (int)piece.GetPieceName();
+        }
         private void UpdateMatrix()
         {
             if (boardMatrix.MSquareIsOppositePiece(currentPlayer.NewPiecePosition, currentPlayer.PlayerColorOfPieces))
             {
-                Piece pieceToRemove = currentPlayer.GetPieceFromPos(currentPlayer.NewPiecePosition);
+                Piece pieceToRemove = opponentPlayer.GetPieceFromPos(currentPlayer.NewPiecePosition);
                 opponentPlayer.RemovePiece(pieceToRemove);
             }
 
-            boardMatrix.MUpdateOldPos(currentPlayer.GetPieceFromPos(currentPlayer.OldPiecePosition).GetPiecePosition());
+            boardMatrix.ErasePieceFromDestination(currentPlayer.GetPieceFromPos(currentPlayer.OldPiecePosition).GetPiecePosition());
             currentPlayer.GetPieceFromPos(currentPlayer.OldPiecePosition).SetPosition(currentPlayer.NewPiecePosition);
             boardMatrix.MInitPieces(currentPlayer, opponentPlayer);
             boardMatrix.MShow();
         }
-        public void CopyBoardMatrix()
+        private void RestaurateBoardMatrix()
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    boardMatrix.allPieces[i, j] = oldMatrix[i, j];
+                }
+            }
+        }
+        private void RestauratePiecePos(Piece piece,Player opponentPlayer, Point destination)
+        {
+            RestaurateOpponentPiece(opponentPlayer,destination);
+            piece.SetPosition(oldPosition);
+        }
+        private void RestaurateOpponentPiece(Player opponentPlayer, Point destination)
+        {
+            foreach(Piece piece in opponentPlayer.GetPieces())
+            {
+                if (piece.GetPiecePosition().X == -1)
+                {
+                    piece.SetPosition(destination);
+                }
+            }
+        }
+        private void UpdatePiecePos(Piece piece, Point destination)
+        {
+            piece.SetPosition(destination);
+        }
+        private void SetPiecePosOutOfBoard(Piece opponentPiece)
+        {
+            opponentPiece.SetPosition(new Point(-1,-1));
+        }
+        private void ErasePieceFromMatrix(Point destination)
+        {
+            boardMatrix.ErasePieceFromDestination(destination);
+        }   
+        private Piece GetOpponentPieceFromDestination(Point destination,Player opponentPlayer)
+        {
+            foreach(Piece piece in opponentPlayer.GetPieces())
+            {
+                if (destination == piece.GetPiecePosition())
+                    return piece;
+            }
+            return null;
+        }
+        private bool DestIsOppositePiece(Point position,Player currentPlayer)
+        {
+            if (boardMatrix.MSquareIsOppositePiece(position,currentPlayer.GetPlayerColor())) 
+                return true;
+            return false;
+        }
+        private void SavePiecePos(Piece piece)
+        {
+            OldPosition = piece.GetPiecePosition();
+        }
+        private void SaveCurrentBoardMatrix()
         {
             for (int i = 0; i < 8; i++)
             {
@@ -118,15 +197,11 @@ namespace Chess
                 }
             }
         }
-        public void CopyOldMatrix()
+        private Player GetOpponentPlayer(Player player)
         {
-            for (int i = 0; i < 8; i++)
-            {
-                for (int j = 0; j < 8; j++)
-                {
-                    boardMatrix.allPieces[i, j] = oldMatrix[i, j];
-                }
-            }
+            if (player == currentPlayer)
+                return opponentPlayer;
+            return currentPlayer;
         }
         public void SendMessagesToPlayers()
         {
@@ -137,58 +212,12 @@ namespace Chess
         }
         private bool MoveOfCurrentPlayerIsValid()
         {
-            foreach(Piece piece in currentPlayer.GetPieces())
+            foreach(Point move in currentPlayer.GetPieceFromPos(currentPlayer.OldPiecePosition).GetLValidMoves())
             {
-                foreach(Point move in piece.GetLValidMoves())
-                {
-                    if (move==currentPlayer.NewPiecePosition)
-                        return true;
-                }
+                if (move==currentPlayer.NewPiecePosition)
+                    return true;
             }
             return false;
-        }
-        public bool Check(Point kingPos, Piece pieceFromImage,Player currentPlayer,Player opponentPlayer)
-        {
-            CopyBoardMatrix();
-            OldPosition = pieceFromImage.GetPiecePosition();
-
-            int check = 0;
-            pieceFromImage.SetPosition(currentPlayer.NewPiecePosition);
-
-            if (boardMatrix.allPieces[currentPlayer.NewPiecePosition.X, currentPlayer.NewPiecePosition.Y] != 0)
-            {
-                foreach (Piece piece in opponentPlayer.GetPieces())
-                {
-                    if (piece.GetPiecePosition() == currentPlayer.NewPiecePosition)
-                    {
-                        piece.SetPosition(new Point(-1, -1));
-                    }
-                }
-            }
-            boardMatrix.MUpdateOldPos(oldPosition);
-            boardMatrix.MInitPieces(currentPlayer, opponentPlayer);
-
-            if (pieceFromImage.GetPieceName() == PieceNames.king)
-            {
-                kingPos = currentPlayer.NewPiecePosition;
-            }
-            foreach (Piece piece in opponentPlayer.GetPieces())
-            {
-                if (piece.GetPiecePosition().X == -1)
-                    continue;
-                if (piece.KingPosIsValidMove(kingPos))
-                    check = 1;
-            }
-
-            pieceFromImage.SetPosition(OldPosition);
-            CopyOldMatrix();
-
-            foreach (Piece opiece in opponentPlayer.GetPieces())
-            {
-                if (opiece.GetPiecePosition().X == -1)
-                    opiece.SetPosition(currentPlayer.NewPiecePosition);
-            }
-            return check == 1 ? true : false;
         }
         private bool CheckMate()
         {
@@ -211,6 +240,5 @@ namespace Chess
                     currentPlayer.NewPiecePosition.X.ToString() + 
                     currentPlayer.NewPiecePosition.Y.ToString();
         }
-
     }
 }

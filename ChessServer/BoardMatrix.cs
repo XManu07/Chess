@@ -37,11 +37,10 @@ namespace Chess
                 Console.WriteLine();
             }
         }
-        public void MUpdateOldPos(Point oldPos)
+        public void ErasePieceFromDestination(Point pos)
         {
-            allPieces[oldPos.X, oldPos.Y] = 0;
+            allPieces[pos.X, pos.Y] = 0;
         }
-
         public bool MSquareIsEmpty(Point destination)
         {
             return (allPieces[destination.X, destination.Y] == 0) ? true : false;
@@ -50,7 +49,6 @@ namespace Chess
         {
             return allPieces[x, y] == (int)PieceNames.gol ? true : false;
         }
-
         public bool MSquareIsOppositePiece(Point destination,Colors pieceColor)
         {
             if (pieceColor == Colors.black)
