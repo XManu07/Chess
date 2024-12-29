@@ -34,12 +34,12 @@ namespace Chess
             {
                 for (int i = GetPiecePosition().Y + 1; i < destination.Y; i++)
                 {
-                    if (matrix.MSquareIsEmpty(destination.X, i) == false)
+                    if (pieceMatrix.MSquareIsEmpty(destination.X, i) == false)
                         return false;
                 }
                 for (int i = GetPiecePosition().Y - 1; i > destination.Y; i--)
                 {
-                    if (matrix.MSquareIsEmpty(destination.X, i) == false)
+                    if (pieceMatrix.MSquareIsEmpty(destination.X, i) == false)
                         return false;
                 }
 
@@ -48,12 +48,12 @@ namespace Chess
             {
                 for (int i = GetPiecePosition().X + 1; i < destination.X; i++)
                 {
-                    if (matrix.MSquareIsEmpty(i, destination.Y) == false)
+                    if (pieceMatrix.MSquareIsEmpty(i, destination.Y) == false)
                         return false;
                 }
                 for (int i = GetPiecePosition().X - 1; i > destination.X; i--)
                 {
-                    if (matrix.MSquareIsEmpty(i, destination.Y) == false)
+                    if (pieceMatrix.MSquareIsEmpty(i, destination.Y) == false)
                         return false;
                 }
             }
@@ -64,11 +64,11 @@ namespace Chess
         {
             if (ValidDestination(destination))
             {
-                if (PieceToDestinationIsEmpty(destination)&&matrix.MSquareIsEmpty(destination))
+                if (PieceToDestinationIsEmpty(destination)&&pieceMatrix.MSquareIsEmpty(destination))
                     return true;
                 if (PieceToDestinationIsEmpty(destination))
-                    if (matrix.MSquareIsOppositePiece(destination, GetPieceColor())&&
-                        !matrix.MSquareIsOppositeKing(destination,GetPieceColor()))
+                    if (pieceMatrix.MSquareIsOppositePiece(destination, GetPieceColor())&&
+                        !pieceMatrix.MSquareIsOppositeKing(destination,GetPieceColor()))
                         return true;
             }
             return false;

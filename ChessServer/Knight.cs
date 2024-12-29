@@ -42,9 +42,9 @@ namespace Chess
         {
             if (ValidDestination(destination))
             {
-                if (matrix.MSquareIsEmpty(destination))
+                if (pieceMatrix.MSquareIsEmpty(destination))
                     return true;
-                if (matrix.MSquareIsOppositePiece(destination, GetPieceColor()) && !matrix.MSquareIsOppositeKing(destination, GetPieceColor()))
+                if (pieceMatrix.MSquareIsOppositePiece(destination, GetPieceColor()) && !pieceMatrix.MSquareIsOppositeKing(destination, GetPieceColor()))
                     return true;
             }
            return false;

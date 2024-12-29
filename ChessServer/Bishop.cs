@@ -36,7 +36,7 @@ namespace Chess
                     if (GetPiecePosition().Y - destination.Y > 0)
                         j++;
                     else j--;
-                    if (!matrix.MSquareIsEmpty(i, j))
+                    if (!pieceMatrix.MSquareIsEmpty(i, j))
                         return false;
                 }
             }
@@ -48,7 +48,7 @@ namespace Chess
                     if (GetPiecePosition().Y - destination.Y > 0)
                         j++;
                     else j--;
-                    if (!matrix.MSquareIsEmpty(i, j))
+                    if (!pieceMatrix.MSquareIsEmpty(i, j))
                         return false;
                 }
             }
@@ -59,11 +59,11 @@ namespace Chess
             
             if(ValidDestination(destination))
             {
-                if (PieceToDestinationIsEmpty(destination)&&matrix.MSquareIsEmpty(destination))
+                if (PieceToDestinationIsEmpty(destination)&&pieceMatrix.MSquareIsEmpty(destination))
                     return true;
                 if(PieceToDestinationIsEmpty(destination))
                 {
-                    if(matrix.MSquareIsOppositePiece(destination, GetPieceColor())&&!matrix.MSquareIsOppositeKing(destination,GetPieceColor())) 
+                    if(pieceMatrix.MSquareIsOppositePiece(destination, GetPieceColor())&&!pieceMatrix.MSquareIsOppositeKing(destination,GetPieceColor())) 
                         return true;
                 }
             }

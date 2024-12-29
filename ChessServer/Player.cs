@@ -114,7 +114,6 @@ namespace Chess
             Console.WriteLine("Client disconnected...");
             tcpClient.Close();
         }
-
         private void HandleSendValidMoveList(string data)
         {
             int position;
@@ -130,7 +129,6 @@ namespace Chess
             Piece currentPiece = GetPieceFromPos(oldPiecePosition);
             writer.WriteLine("m" + currentPiece.ListMovesToString()); //m from moves
         }
-
         private void HandlePiecePosition(int number)
         {
             int y = number % 10;
@@ -145,7 +143,6 @@ namespace Chess
             
             Moved = true;
         }
-
 
         #region Pieces
         void InitPieces()
@@ -191,19 +188,16 @@ namespace Chess
             }
             return null;
         }
-
-        internal void WriteGoodMove()
+        public void WriteGoodMove()
         {
             writer.WriteLine("true");
             Console.WriteLine("am scris");
         }
-
-        internal void WriteCurrentPlayerMove(string move)
+        public void WriteCurrentPlayerMove(string move)
         {
             writer.WriteLine(move);
         }
-
-        internal void ClearLValidMoves()
+        public void ClearLValidMoves()
         {
             foreach (var piece in pieces)
                 piece.GetLValidMoves().Clear();

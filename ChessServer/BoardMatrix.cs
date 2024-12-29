@@ -37,7 +37,7 @@ namespace Chess
                 Console.WriteLine();
             }
         }
-        public void ErasePieceFromDestination(Point pos)
+        public void MErasePieceFromDestination(Point pos)
         {
             allPieces[pos.X, pos.Y] = 0;
         }

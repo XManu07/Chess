@@ -41,7 +41,7 @@ namespace Chess
                 if (PositionIsInMatrix(i, destination.Y-1))
                 {
                     Point dest=new Point(i, destination.Y-1);
-                    if (matrix.MSquareIsOppositeKing(dest,GetPieceColor()))
+                    if (pieceMatrix.MSquareIsOppositeKing(dest,GetPieceColor()))
                     {
                         return true;
                     }
@@ -49,7 +49,7 @@ namespace Chess
                 if (PositionIsInMatrix(i, destination.Y +1))
                 {
                     Point dest = new Point(i, destination.Y + 1);
-                    if (matrix.MSquareIsOppositeKing(dest, GetPieceColor()))
+                    if (pieceMatrix.MSquareIsOppositeKing(dest, GetPieceColor()))
                     {
                         return true;
                     }
@@ -58,7 +58,7 @@ namespace Chess
             if (PositionIsInMatrix(destination.X+1, destination.Y))
             {
                 Point dest = new Point(destination.X+1, destination.Y);
-                if (matrix.MSquareIsOppositeKing(dest, GetPieceColor()))
+                if (pieceMatrix.MSquareIsOppositeKing(dest, GetPieceColor()))
                 {
                     return true;
                 }
@@ -66,7 +66,7 @@ namespace Chess
             if (PositionIsInMatrix(destination.X-1, destination.Y ))
             {
                 Point dest = new Point(destination.X-1, destination.Y );
-                if (matrix.MSquareIsOppositeKing(dest,GetPieceColor()))
+                if (pieceMatrix.MSquareIsOppositeKing(dest,GetPieceColor()))
                 {
                     return true;
                 }
@@ -82,9 +82,9 @@ namespace Chess
 
         internal override bool ValidMove(Point destination)
         {
-            if (ValidSquare(destination) && matrix.MSquareIsEmpty(destination))
+            if (ValidSquare(destination) && pieceMatrix.MSquareIsEmpty(destination))
                 return true;
-            if(ValidSquare(destination)&& matrix.MSquareIsOppositePiece(destination,GetPieceColor()))
+            if(ValidSquare(destination)&& pieceMatrix.MSquareIsOppositePiece(destination,GetPieceColor()))
                 return true;
             return false;
         }

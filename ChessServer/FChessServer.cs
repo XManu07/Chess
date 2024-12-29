@@ -29,7 +29,6 @@ namespace ChessServer
             t.Start();
             
         }
-
         public void ListenerForIncomingClients()
         {
             while (workThread)
@@ -39,7 +38,7 @@ namespace ChessServer
                 playerNumber++;
 
                 players[playerNumber] = player;
-                switchPlayerColor();
+                SwitchPlayerColor();
 
                 if (playerNumber == 2)
                 {
@@ -47,8 +46,7 @@ namespace ChessServer
                 }
             }
         }
-
-        private void switchPlayerColor()
+        private void SwitchPlayerColor()
         {
             if (playerColorOfPieces == Colors.black)
                 playerColorOfPieces = Colors.white;

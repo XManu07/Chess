@@ -21,8 +21,8 @@ namespace Chess
             currentPlayer= player1;
             opponentPlayer= player2;
 
-            Piece.matrix = new BoardMatrix(player1,player2);
-            boardMatrix = Piece.matrix;
+            Piece.pieceMatrix = new BoardMatrix(player1,player2);
+            boardMatrix = Piece.pieceMatrix;
             oldMatrix = new int[8, 8];
 
             GenerateLValidMoves();
@@ -79,15 +79,16 @@ namespace Chess
         {
             if (piece.ValidMove(newPos))
             {
-                if (Check(player, piece,newPos,GetOpponentPlayer(player)))
+                if (Check(player, piece,newPos))
                     return false;
                 return true;
             }
             return false;
         }
-        public bool Check(Player currentPlayer,Piece piece,Point destination,Player opponentPlayer)
+        public bool Check(Player currentPlayer,Piece piece,Point destination)
         {
-            SavePiecePos(piece);
+            Player opponentPlayer = GetOpponentPlayer(currentPlayer);
+            SavePiecePos(piece);                  
             SaveCurrentBoardMatrix();
 
             if (DestIsOppositePiece(destination,currentPlayer))
@@ -97,12 +98,12 @@ namespace Chess
                 SetPiecePosOutOfBoard(opponentPieceFromDestination);
             }
 
-            UpdatePiecePos(piece,destination);
+            UpdatePiecePos(piece,destination); 
             UpdateMatrix(piece, destination);
 
             foreach(Piece opponentPiece in opponentPlayer.GetPieces())
             {
-                if (opponentPiece.KingPosIsValidMove(currentPlayer.GetKingPoint()))
+                if (opponentPiece.KingPosIsValidMove(currentPlayer.GetKingPoint())) 
                 {
                     RestauratePiecePos(piece,opponentPlayer,destination);
                     RestaurateBoardMatrix();
@@ -126,7 +127,7 @@ namespace Chess
                 opponentPlayer.RemovePiece(pieceToRemove);
             }
 
-            boardMatrix.ErasePieceFromDestination(currentPlayer.GetPieceFromPos(currentPlayer.OldPiecePosition).GetPiecePosition());
+            boardMatrix.MErasePieceFromDestination(currentPlayer.GetPieceFromPos(currentPlayer.OldPiecePosition).GetPiecePosition());
             currentPlayer.GetPieceFromPos(currentPlayer.OldPiecePosition).SetPosition(currentPlayer.NewPiecePosition);
             boardMatrix.MInitPieces(currentPlayer, opponentPlayer);
             boardMatrix.MShow();
@@ -166,7 +167,7 @@ namespace Chess
         }
         private void ErasePieceFromMatrix(Point destination)
         {
-            boardMatrix.ErasePieceFromDestination(destination);
+            boardMatrix.MErasePieceFromDestination(destination);
         }   
         private Piece GetOpponentPieceFromDestination(Point destination,Player opponentPlayer)
         {

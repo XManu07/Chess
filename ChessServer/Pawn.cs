@@ -80,7 +80,7 @@ namespace Chess
                 if (GetPiecePosition().X == 6 &&
                     destination.X + 2 == GetPiecePosition().X &&
                     GetPiecePosition().Y == destination.Y &&
-                    matrix.MSquareIsEmpty(destination.X+1, destination.Y))
+                    pieceMatrix.MSquareIsEmpty(destination.X+1, destination.Y))
                     return true;
                 else return false;
             }
@@ -89,7 +89,7 @@ namespace Chess
                 if (GetPiecePosition().X == 1 &&
                     destination.X - 2 == GetPiecePosition().X &&
                     GetPiecePosition().Y == destination.Y &&
-                    matrix.MSquareIsEmpty(destination.X - 1, destination.Y))
+                    pieceMatrix.MSquareIsEmpty(destination.X - 1, destination.Y))
                     return true;
                 else return false;
             }
@@ -100,12 +100,12 @@ namespace Chess
 
             if (OnePositionIsValid(destination))
             {
-                if (matrix.MSquareIsEmpty(destination))
+                if (pieceMatrix.MSquareIsEmpty(destination))
                     return true;
             }
             if (CanTakeFrontPiece(destination))
             {
-                if (matrix.MSquareIsOppositePiece(destination,GetPieceColor()) && !matrix.MSquareIsOppositeKing(destination, GetPieceColor()))
+                if (pieceMatrix.MSquareIsOppositePiece(destination,GetPieceColor()) && !pieceMatrix.MSquareIsOppositeKing(destination, GetPieceColor()))
                     return true;
             }
             if (TwoPositionIsValid(destination))

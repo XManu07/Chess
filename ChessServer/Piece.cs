@@ -12,12 +12,12 @@ namespace Chess
         private Colors pieceColor;
         private Point piecePosition;
 
-        private List<Point> LValidMoves;
-        public static BoardMatrix matrix;
+        private List<Point> pieceLValidMoves;
+        public static BoardMatrix pieceMatrix;
         
         public Piece()
         {
-            LValidMoves = new List<Point>();
+            pieceLValidMoves = new List<Point>();
         }
         #region Set,Get
         public void SetPieceName(PieceNames name)
@@ -53,7 +53,7 @@ namespace Chess
 
         public List<Point> GetLValidMoves()
         {
-            return LValidMoves;
+            return pieceLValidMoves;
         }
         #endregion
 
@@ -75,7 +75,7 @@ namespace Chess
         public string ListMovesToString()
         {
             string data=null;
-            foreach(Point move in LValidMoves)
+            foreach(Point move in pieceLValidMoves)
             {
                 data=data+move.X.ToString()+ move.Y.ToString();
             }
