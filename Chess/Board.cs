@@ -193,3 +193,4 @@ namespace Chess
         }
     }
 }
+// cod modificat de Denisa
